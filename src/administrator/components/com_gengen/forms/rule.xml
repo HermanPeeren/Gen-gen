@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	One rule: for each node this source pattern yields, when it passes these
+	conditions, render this template to this output path, binding these
+	variables.
+
+	That sentence is the form. It is also exactly what the engine executes, so
+	nothing here has to be translated into something else before it can run -
+	see GeneratorDefinition for the one shape difference the form layer forces.
+-->
+<form>
+	<fieldset
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<field
+			name="rule_id"
+			type="text"
+			label="COM_GENGEN_RULE_FIELD_ID_LABEL"
+			description="COM_GENGEN_RULE_FIELD_ID_DESC"
+			size="40"
+			required="true"
+			class="ruleId"
+		/>
+
+		<!-- Iteration: which source elements this rule applies to. -->
+		<field
+			name="source"
+			type="ruleselector"
+			label="COM_GENGEN_RULE_FIELD_SOURCE_LABEL"
+			description="COM_GENGEN_RULE_FIELD_SOURCE_DESC"
+			required="true"
+		/>
+
+		<field
+			name="template"
+			type="ruletemplate"
+			label="COM_GENGEN_RULE_FIELD_TEMPLATE_LABEL"
+			description="COM_GENGEN_RULE_FIELD_TEMPLATE_DESC"
+			required="true"
+		/>
+
+		<!--
+			The output path, with {variable} and {variable|filter} standing for
+			what the rule binds. An unbound placeholder is refused rather than
+			expanded to nothing: a path that quietly loses a segment produces a
+			file in the wrong place, which installs, and is then very hard to
+			explain.
+		-->
+		<field
+			name="output"
+			type="text"
+			label="COM_GENGEN_RULE_FIELD_OUTPUT_LABEL"
+			description="COM_GENGEN_RULE_FIELD_OUTPUT_DESC"
+			size="60"
+			required="true"
+		/>
+
+		<field
+			name="condition"
+			type="subform"
+			formsource="administrator/components/com_gengen/forms/condition.xml"
+			multiple="true"
+			min="0"
+			buttons="add,remove"
+			label="COM_GENGEN_RULE_FIELD_CONDITIONS_LABEL"
+			description="COM_GENGEN_RULE_FIELD_CONDITIONS_DESC"
+			id="condition"
+			layout="joomla.form.field.subform.repeatable"
+		/>
+
+		<field
+			name="binding"
+			type="subform"
+			formsource="administrator/components/com_gengen/forms/binding.xml"
+			multiple="true"
+			min="0"
+			buttons="add,remove,move"
+			label="COM_GENGEN_RULE_FIELD_BINDINGS_LABEL"
+			description="COM_GENGEN_RULE_FIELD_BINDINGS_DESC"
+			id="binding"
+			layout="joomla.form.field.subform.repeatable"
+		/>
+	</fieldset>
+</form>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Where one template variable's value comes from.
+
+	Five kinds, and the split between them is the point of modelling a
+	generator at all. `literal`, `path` and `node` are lookups, so they are
+	filled in here. `derive` and `fragments` name a function, which is the
+	honest way of saying "this one is a computation": it stays PHP in the
+	target, it keeps a name, and this form can only pick from the names that
+	target actually registered.
+
+	Which box carries the value depends on the kind, because a derivation is
+	chosen from a list and a literal is typed. One field cannot be both.
+-->
+<form>
+	<fieldset
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<field
+			name="variable"
+			type="text"
+			label="COM_GENGEN_BINDING_FIELD_VARIABLE_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_VARIABLE_DESC"
+			size="30"
+			required="true"
+		/>
+
+		<field
+			name="kind"
+			type="bindingkind"
+			label="COM_GENGEN_BINDING_FIELD_KIND_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_KIND_DESC"
+			default="path"
+			required="true"
+		/>
+
+		<field
+			name="value"
+			type="text"
+			label="COM_GENGEN_BINDING_FIELD_VALUE_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_VALUE_DESC"
+			size="50"
+			showon="kind:literal,path,node"
+		/>
+
+		<field
+			name="derivation"
+			type="derivation"
+			label="COM_GENGEN_BINDING_FIELD_DERIVATION_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_DERIVATION_DESC"
+			showon="kind:derive,fragments"
+		/>
+
+		<field
+			name="fragment_template"
+			type="ruletemplate"
+			label="COM_GENGEN_BINDING_FIELD_FRAGMENT_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_FRAGMENT_DESC"
+			showon="kind:fragments"
+		/>
+
+		<field
+			name="glue"
+			type="text"
+			label="COM_GENGEN_BINDING_FIELD_GLUE_LABEL"
+			description="COM_GENGEN_BINDING_FIELD_GLUE_DESC"
+			size="10"
+			showon="kind:fragments"
+		/>
+	</fieldset>
+</form>

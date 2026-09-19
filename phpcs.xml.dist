@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ruleset name="gengen">
+	<description>
+		PSR-12, minus the rules that contradict Joomla's own conventions.
+
+		The same ruleset Exten-gen and the core use, and for the same reason:
+		Joomla mandates tabs where PSR-12 forbids them, and a Joomla extension
+		whose files sit beside core's follows core.
+	</description>
+
+	<file>src/administrator/components/com_gengen/src</file>
+	<file>tests</file>
+	<file>tools</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/joomla/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<rule ref="PSR12"/>
+
+	<!--
+		Joomla indents with tabs and PSR-12 forbids them. See the description.
+	-->
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent">
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+	<rule ref="Generic.Files.LineEndings">
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+
+	<!--
+		Every Joomla source file opens with `defined('_JEXEC') or die;`. PSR-1
+		calls that a side effect beside a class declaration, and it is - it is
+		also mandatory, and the reason it is mandatory is that without it the
+		file does something when requested directly over the web.
+	-->
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+
+	<!--
+		A tool declares its helpers and then does its work in the same file,
+		which is what a script is.
+	-->
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+</ruleset>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	One test the matched node must pass.
+
+	Four operators, and that is the whole language. A form can offer a choice
+	between four; it cannot offer an expression language without becoming a
+	programming environment, which is the thing this design is trying not to
+	build. Anything a condition cannot say belongs in a derivation, where it is
+	ordinary PHP with a name and a test.
+-->
+<form>
+	<fieldset
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<field
+			name="operator"
+			type="operator"
+			label="COM_GENGEN_CONDITION_FIELD_OPERATOR_LABEL"
+			description="COM_GENGEN_CONDITION_FIELD_OPERATOR_DESC"
+			default="has"
+			required="true"
+		/>
+
+		<field
+			name="path"
+			type="text"
+			label="COM_GENGEN_CONDITION_FIELD_PATH_LABEL"
+			description="COM_GENGEN_CONDITION_FIELD_PATH_DESC"
+			size="40"
+			required="true"
+		/>
+
+		<!--
+			`has` and `missing` compare with nothing, so the box is hidden for
+			them - and what it still holds is not written into the rule.
+		-->
+		<field
+			name="value"
+			type="text"
+			label="COM_GENGEN_CONDITION_FIELD_VALUE_LABEL"
+			description="COM_GENGEN_CONDITION_FIELD_VALUE_DESC"
+			size="40"
+			showon="operator:equals,notEquals"
+		/>
+	</fieldset>
+</form>

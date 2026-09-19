@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	A generator, as a thing you fill in rather than a thing you write.
+
+	The whole of it is: which target, and then a list of rules. Everything a
+	rule may say is a choice offered from that target's published vocabulary,
+	which is what makes this a modelling form and not a JSON editor with
+	rounded corners. You cannot name a selector the target does not have,
+	because the list does not contain one.
+-->
+<form>
+	<fieldset name="general"
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<field
+			name="id"
+			type="number"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			default="0"
+			class="readonly"
+			readonly="true"
+		/>
+
+		<field
+			name="generator_name"
+			type="text"
+			label="COM_GENGEN_GENERATOR_FIELD_NAME_LABEL"
+			description="COM_GENGEN_GENERATOR_FIELD_NAME_DESC"
+			size="40"
+			required="true"
+		/>
+
+		<!--
+			Which target's language the rules below are written in. Changing it
+			after the fact invalidates every rule, which is why it is here at
+			the top rather than per rule: a generator transforms one model into
+			one target, and a rule set that mixed two would have no meaning.
+		-->
+		<field
+			name="target"
+			type="generatortarget"
+			label="COM_GENGEN_GENERATOR_FIELD_TARGET_LABEL"
+			description="COM_GENGEN_GENERATOR_FIELD_TARGET_DESC"
+			required="true"
+		/>
+
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			default="1"
+			id="published"
+			class="custom-select-color-state"
+			size="1"
+		>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="2">JARCHIVED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+	</fieldset>
+
+	<fieldset name="rules"
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<!--
+			Order is meaning, not presentation. Later rules overwrite earlier
+			ones at the same output path, and consecutive rules over one source
+			pattern run node-major - so moving a rule up or down here can change
+			what a generated language file contains. See docs/development.md.
+		-->
+		<field
+			name="rule"
+			type="subform"
+			formsource="administrator/components/com_gengen/forms/rule.xml"
+			multiple="true"
+			buttons="add,remove,move"
+			label="COM_GENGEN_GENERATOR_FIELD_RULES_LABEL"
+			description="COM_GENGEN_GENERATOR_FIELD_RULES_DESC"
+			id="rule"
+			layout="joomla.form.field.subform.repeatable"
+		/>
+	</fieldset>
+</form>

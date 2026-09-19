@@ -1,0 +1,36 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+parameters:
+    # Level 5, the same as Exten-gen. There is no legacy tree here to hold it
+    # down, so this can rise once the component's MVC lands at 2.4 and there is
+    # something to raise it against.
+    level: 5
+
+    paths:
+        - src/administrator/components/com_gengen/src
+        - tests
+        - tools
+
+    # Joomla is reference material: it supplies the base classes the custom form
+    # fields extend. Unpack a Joomla 6 package into /joomla, which is
+    # git-ignored; CI fetches its own.
+    scanDirectories:
+        - joomla/libraries
+        - joomla/administrator/components
+
+    bootstrapFiles:
+        - tools/phpstan-bootstrap.php
+
+    excludePaths:
+        # The shared library is installed into the development site as well as
+        # required through composer, and the two are only the same version
+        # until one of them is updated. Scanning both means analysing against
+        # whichever copy the analyser happens to resolve first, which showed up
+        # as "undefined constant Binding::KINDS" against a constant that very
+        # much exists. Composer's copy is the one the tests run against, so it
+        # is the one that counts.
+        analyseAndScan:
+            - joomla/libraries/yepr_gen
+
+    treatPhpDocTypesAsCertain: false
