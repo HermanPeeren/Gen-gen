@@ -14,7 +14,7 @@
 	>
 		<field
 			name="operator"
-			type="operator"
+			type="Operator"
 			label="COM_GENGEN_CONDITION_FIELD_OPERATOR_LABEL"
 			description="COM_GENGEN_CONDITION_FIELD_OPERATOR_DESC"
 			default="has"

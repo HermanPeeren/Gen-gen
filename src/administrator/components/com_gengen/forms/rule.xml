@@ -25,7 +25,7 @@
 		<!-- Iteration: which source elements this rule applies to. -->
 		<field
 			name="source"
-			type="ruleselector"
+			type="RuleSelector"
 			label="COM_GENGEN_RULE_FIELD_SOURCE_LABEL"
 			description="COM_GENGEN_RULE_FIELD_SOURCE_DESC"
 			required="true"
@@ -33,7 +33,7 @@
 
 		<field
 			name="template"
-			type="ruletemplate"
+			type="RuleTemplate"
 			label="COM_GENGEN_RULE_FIELD_TEMPLATE_LABEL"
 			description="COM_GENGEN_RULE_FIELD_TEMPLATE_DESC"
 			required="true"

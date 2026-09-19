@@ -86,10 +86,18 @@ Three things that translation gets right and a naive one would not:
 
 ## Why the dropdowns are the point
 
-A `type="ruleselector"` field offers the target's selectors, `type="derivation"`
-its derivations, `type="ruletemplate"` its templates. `type="operator"` and
-`type="bindingkind"` come from the library's own constants, because a target may
+A `type="RuleSelector"` field offers the target's selectors, `type="Derivation"`
+its derivations, `type="RuleTemplate"` its templates. `type="Operator"` and
+`type="BindingKind"` come from the library's own constants, because a target may
 add selectors and derivations but does not get to add operators.
+
+**The capitals are load-bearing.** `FormHelper::loadClass()` builds the class
+name as `ucfirst(ucwords($type)) . 'Field'`, and `ucwords` only touches letters
+after whitespace - so `type="ruleselector"` asks for `RuleselectorField`, which
+is one letter away from the class and, on a case-insensitive filesystem, no
+letters away at all. It passed on Windows and failed on the first CI run, which
+is what CI is for. On a Linux server the class is simply not found and the
+closed list degrades into a text box.
 
 That is what makes this a modelling tool rather than a JSON editor with rounded
 corners. The engine enforces a closed vocabulary; these fields *offer* it, so a

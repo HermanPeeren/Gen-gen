@@ -38,7 +38,7 @@
 		-->
 		<field
 			name="target"
-			type="generatortarget"
+			type="GeneratorTarget"
 			label="COM_GENGEN_GENERATOR_FIELD_TARGET_LABEL"
 			description="COM_GENGEN_GENERATOR_FIELD_TARGET_DESC"
 			required="true"

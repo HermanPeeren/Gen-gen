@@ -80,14 +80,22 @@ final class FormsTest extends TestCase
     }
 
     /**
-     * Every custom field type a form uses has a class that provides it.
+     * Every custom field type a form uses resolves to a class that is there.
      *
-     * Joomla resolves `type="ruleselector"` to `RuleSelectorField` under the
-     * form's `addfieldprefix`. When it cannot, it falls back to a plain text
-     * box - so a typo here does not fail, it silently turns a closed list of
-     * the target's selectors into a place to type anything at all.
+     * Resolved the way Joomla resolves it, which is the only version of the
+     * question worth asking. `FormHelper::loadClass()` builds the class name as
+     * `ucfirst(ucwords($type)) . 'Field'` under the form's `addfieldprefix`, and
+     * `ucwords` only touches letters after whitespace - so `ruleselector`
+     * becomes `RuleselectorField`, not `RuleSelectorField`.
+     *
+     * That is one letter, and on Windows it is no letters at all, because the
+     * filesystem does not care. On the Linux server this will run on, the class
+     * is simply not found and Joomla falls back to something that is not a
+     * closed list - which turns "pick one of the target's selectors" into "type
+     * anything you like". It failed in CI on the first push, which is what CI
+     * is for; it had passed locally for the whole of its short life.
      */
-    public function testEveryCustomFieldTypeHasAClass(): void
+    public function testEveryCustomFieldTypeResolvesTheWayJoomlaResolvesIt(): void
     {
         $builtIn = ['text', 'number', 'hidden', 'list', 'subform'];
         $missing = [];
@@ -96,17 +104,20 @@ final class FormsTest extends TestCase
             foreach ($this->form($name)->xpath('//field[@type]') ?: [] as $field) {
                 $type = (string) $field['type'];
 
-                if (\in_array(strtolower($type), $builtIn, true)) {
+                if (\in_array($type, $builtIn, true)) {
                     continue;
                 }
 
-                if (!is_file($this->fieldRoot() . ucfirst($type) . 'Field.php')) {
-                    $missing[] = $name . ': ' . $type;
+                // FormHelper::loadClass(), minus the parts that do not apply here.
+                $class = ucfirst(ucwords($type)) . 'Field.php';
+
+                if (!\in_array($class, scandir($this->fieldRoot()) ?: [], true)) {
+                    $missing[] = $name . ': type="' . $type . '" wants ' . $class;
                 }
             }
         }
 
-        $this->assertSame([], $missing, 'Field types with no class: ' . implode(', ', $missing));
+        $this->assertSame([], $missing, implode(', ', $missing));
     }
 
     /**

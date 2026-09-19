@@ -27,7 +27,7 @@
 
 		<field
 			name="kind"
-			type="bindingkind"
+			type="BindingKind"
 			label="COM_GENGEN_BINDING_FIELD_KIND_LABEL"
 			description="COM_GENGEN_BINDING_FIELD_KIND_DESC"
 			default="path"
@@ -45,7 +45,7 @@
 
 		<field
 			name="derivation"
-			type="derivation"
+			type="Derivation"
 			label="COM_GENGEN_BINDING_FIELD_DERIVATION_LABEL"
 			description="COM_GENGEN_BINDING_FIELD_DERIVATION_DESC"
 			showon="kind:derive,fragments"
@@ -53,7 +53,7 @@
 
 		<field
 			name="fragment_template"
-			type="ruletemplate"
+			type="RuleTemplate"
 			label="COM_GENGEN_BINDING_FIELD_FRAGMENT_LABEL"
 			description="COM_GENGEN_BINDING_FIELD_FRAGMENT_DESC"
 			showon="kind:fragments"
