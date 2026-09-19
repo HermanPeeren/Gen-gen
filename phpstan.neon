@@ -30,7 +30,11 @@ parameters:
         # as "undefined constant Binding::KINDS" against a constant that very
         # much exists. Composer's copy is the one the tests run against, so it
         # is the one that counts.
+        #
+        # A glob, not the directory: PHPStan errors on an excludePath that does
+        # not exist, and on CI it does not - a freshly fetched Joomla has no
+        # extensions installed in it. A wildcard that matches nothing is fine.
         analyseAndScan:
-            - joomla/libraries/yepr_gen
+            - joomla/libraries/yepr_gen/*
 
     treatPhpDocTypesAsCertain: false
