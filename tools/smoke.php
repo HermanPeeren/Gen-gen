@@ -74,7 +74,14 @@ $namespaces = (array) require $map;
 
 // Registered the way an application registers them, so what is checked below is
 // the map the installer wrote and not this script's idea of where files are.
-$loader = include JPATH_LIBRARIES . '/vendor/autoload.php';
+$autoload = JPATH_LIBRARIES . '/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "This site has no libraries/vendor/autoload.php." . PHP_EOL);
+    exit(2);
+}
+
+$loader = include $autoload;
 
 foreach ($namespaces as $prefix => $paths) {
     $loader->setPsr4($prefix, $paths);
