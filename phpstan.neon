@@ -15,9 +15,13 @@ parameters:
     # Joomla is reference material: it supplies the base classes the custom form
     # fields extend. Unpack a Joomla 6 package into /joomla, which is
     # git-ignored; CI fetches its own.
+    #
+    # Libraries only. A development machine's /joomla is usually a working site
+    # with extensions installed in it, and scanning those means the analysis
+    # resolves classes CI cannot see - which is not analysis, it is a local
+    # accident. It masked two failures before this line was narrowed.
     scanDirectories:
         - joomla/libraries
-        - joomla/administrator/components
 
     bootstrapFiles:
         - tools/phpstan-bootstrap.php
@@ -36,5 +40,18 @@ parameters:
         # extensions installed in it. A wildcard that matches nothing is fine.
         analyseAndScan:
             - joomla/libraries/yepr_gen/*
+
+            # This one reaches into Exten-gen on purpose: it generates a
+            # generator for that target and then runs it, which means naming
+            # its classes. Exten-gen is not a dependency of this repository and
+            # must not become one - Gen-gen models generators for whatever is
+            # installed, and a composer requirement on one of them would be
+            # exactly backwards.
+            #
+            # Unanalysed, then, and that is a real gap rather than a shrug. It
+            # is covered another way: AcceptanceTest runs the script for real,
+            # against a checked-out Exten-gen, and a name that did not resolve
+            # would be a fatal error rather than a wrong answer.
+            - tools/check-against-extengen.php
 
     treatPhpDocTypesAsCertain: false
