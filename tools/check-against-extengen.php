@@ -73,7 +73,20 @@ $committedRules = $extengen . '/src/administrator/components/com_extengen/src/Ge
 $generatedRules = $componentRoot . '/Rules/joomla6.rules.json';
 
 if (file_get_contents($committedRules) !== file_get_contents($generatedRules)) {
-    fwrite(STDERR, "The generated rule file is not the one Exten-gen committed.\n");
+    fwrite(STDERR, "The generated rule file is not the one Exten-gen committed.\n\n");
+    fwrite(STDERR, "  generated from  " . $root . "/tests/Fixtures/joomla6.generator.json\n");
+    fwrite(STDERR, "  committed at    " . $committedRules . "\n\n");
+
+    // Three causes, in the order they actually happen. The third is the one
+    // that is easy to mistake for a real difference: this check reads the
+    // target's *current* main, so pushing a change to the rule file after
+    // pushing the fixture that carries it fails here until the other side
+    // lands. That happened on the first CI run of this check.
+    fwrite(STDERR, "Either the model changed and the target has not been regenerated,\n");
+    fwrite(STDERR, "or the target's rule file was edited by hand instead of regenerated,\n");
+    fwrite(STDERR, "or the fixture here is stale: run composer import-vocabularies,\n");
+    fwrite(STDERR, "then composer import-generator, and commit the result.\n");
+
     exit(1);
 }
 

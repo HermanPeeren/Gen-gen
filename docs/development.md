@@ -248,6 +248,13 @@ there. On a machine with only this repository cloned it skips with an
 explanation — a skipped test that is the whole point of the repository is worse
 than no test, so it must not pass silently.
 
+It reads the target's *current* main, which has a consequence worth knowing
+before it surprises you: **when a change spans both repositories, push the
+target's side first.** This repository's CI failed on its first run of this
+check for exactly that reason — the fixture carrying the canonical rule file was
+pushed a minute before Exten-gen's copy of it. Nothing was wrong with either;
+they were briefly out of step. The failure message says so.
+
 ## Not here yet
 
 The component's MVC, its manifest, its `script.php`, its package and its release
