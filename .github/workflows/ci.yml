@@ -12,6 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # The target this generates generators for. AcceptanceTest runs the
+      # generated generator over Exten-gen's golden models and compares every
+      # file with the output Stage 1 approved - which is the one check that
+      # says step 2.3 was done. Without this it skips, and a skipped test that
+      # is the whole point of the repository is worse than no test.
+      - name: Check out Exten-gen to check against
+        uses: actions/checkout@v5
+        with:
+          repository: HermanPeeren/Exten-gen
+          path: target/Exten-gen
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -22,8 +33,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Install Exten-gen's dependencies
+        working-directory: target/Exten-gen
+        run: composer install --prefer-dist --no-progress
+
       - name: Unit tests
         run: composer test
+        env:
+          EXTENGEN_PATH: ${{ github.workspace }}/target/Exten-gen
 
       # PHPStan resolves the form fields against a real Joomla. Without it every
       # `extends ListField` is an unknown class and the analysis says nothing.

@@ -41,13 +41,19 @@ final class GeneratorDefinition
      * @param   string                            $name    What this generator is called.
      * @param   string                            $target  Which target's vocabulary its rules are written in.
      * @param   array<int, array<string, mixed>>  $rules   The rules, in order, in the stored rule shape.
+     * @param   array<int, array<string, mixed>>  $groups  The generator classes, in the order they run.
+     * @param   string                            $outputPath    Where in the package the generator's own source goes.
+     * @param   string                            $phpNamespace  The namespace its classes live in.
      *
      * @since   0.1.0
      */
     public function __construct(
         public readonly string $name,
         public readonly string $target,
-        private readonly array $rules
+        private readonly array $rules,
+        private readonly array $groups = [],
+        public readonly string $outputPath = '',
+        public readonly string $phpNamespace = ''
     ) {
     }
 
@@ -68,27 +74,50 @@ final class GeneratorDefinition
             $rules[] = self::ruleFromFormData($rule);
         }
 
+        $groups = [];
+
+        foreach (self::repeated($data, 'group') as $group) {
+            $groups[] = [
+                'class'   => (string) ($group['class'] ?? ''),
+                'prefix'  => (string) ($group['prefix'] ?? ''),
+                'summary' => (string) ($group['summary'] ?? ''),
+                'emits'   => (bool) ($group['emits'] ?? false),
+            ];
+        }
+
         return new self(
             (string) ($data['generator_name'] ?? ''),
             (string) ($data['target'] ?? ''),
-            $rules
+            $rules,
+            $groups,
+            (string) ($data['output_path'] ?? ''),
+            (string) ($data['php_namespace'] ?? '')
         );
     }
 
     /**
      * Read a generator out of a committed rule file.
      *
-     * @param   string   $name    What to call it.
-     * @param   string   $target  Which target its rules are written in.
-     * @param   RuleSet  $rules   The rules.
+     * @param   string                            $name    What to call it.
+     * @param   string                            $target  Which target its rules are written in.
+     * @param   RuleSet                           $rules   The rules.
+     * @param   array<int, array<string, mixed>>  $groups  The generator classes, in the order they run.
+     * @param   string                            $outputPath    Where the generator's own source goes.
+     * @param   string                            $phpNamespace  The namespace its classes live in.
      *
      * @return  self
      *
      * @since   0.1.0
      */
-    public static function fromRuleSet(string $name, string $target, RuleSet $rules): self
-    {
-        return new self($name, $target, $rules->toArray());
+    public static function fromRuleSet(
+        string $name,
+        string $target,
+        RuleSet $rules,
+        array $groups = [],
+        string $outputPath = '',
+        string $phpNamespace = ''
+    ): self {
+        return new self($name, $target, $rules->toArray(), $groups, $outputPath, $phpNamespace);
     }
 
     /**
@@ -101,6 +130,32 @@ final class GeneratorDefinition
     public function rules(): RuleSet
     {
         return RuleSet::fromArray($this->rules);
+    }
+
+    /**
+     * The generator classes this generator is made of, in the order they run.
+     *
+     * @return  array<int, array<string, mixed>>
+     *
+     * @since   0.2.0
+     */
+    public function groups(): array
+    {
+        return $this->groups;
+    }
+
+    /**
+     * The rules one group claims: those whose ids start with its prefix.
+     *
+     * @param   array<string, mixed>  $group  The group.
+     *
+     * @return  RuleSet
+     *
+     * @since   0.2.0
+     */
+    public function rulesOf(array $group): RuleSet
+    {
+        return $this->rules()->withPrefix((string) ($group['prefix'] ?? ''));
     }
 
     /**
@@ -118,9 +173,23 @@ final class GeneratorDefinition
             $rules['rule' . $index] = self::ruleToFormData($rule);
         }
 
+        $groups = [];
+
+        foreach (array_values($this->groups) as $index => $group) {
+            $groups['group' . $index] = [
+                'class'   => (string) ($group['class'] ?? ''),
+                'prefix'  => (string) ($group['prefix'] ?? ''),
+                'summary' => (string) ($group['summary'] ?? ''),
+                'emits'   => ($group['emits'] ?? false) ? '1' : '0',
+            ];
+        }
+
         return [
             'generator_name' => $this->name,
             'target'         => $this->target,
+            'output_path'    => $this->outputPath,
+            'php_namespace'  => $this->phpNamespace,
+            'group'          => $groups,
             'rule'           => $rules,
         ];
     }

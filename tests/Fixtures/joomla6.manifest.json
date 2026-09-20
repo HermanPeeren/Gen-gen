@@ -1,0 +1,38 @@
+{
+    "generator_name": "Exten-gen: a Joomla 6 component",
+    "target": "joomla6",
+    "output_path": "administrator/components/com_extengen/src/Generator",
+    "php_namespace": "Yepr\\Component\\Extengen\\Administrator\\Generator",
+    "group": [
+        {
+            "class": "ComponentGeneral",
+            "prefix": "component.",
+            "summary": "The component's manifest: what Joomla reads to install it.",
+            "emits": false
+        },
+        {
+            "class": "AdminGeneral",
+            "prefix": "admin.general.",
+            "summary": "The files every component has, whatever it models.",
+            "emits": true
+        },
+        {
+            "class": "AdminEntities",
+            "prefix": "admin.entity.",
+            "summary": "The database: one table per entity, plus the junctions between them.",
+            "emits": true
+        },
+        {
+            "class": "AdminMVC",
+            "prefix": "admin.mvc.",
+            "summary": "The back-end controllers, models, views and layouts.",
+            "emits": false
+        },
+        {
+            "class": "SiteMVC",
+            "prefix": "site.mvc.",
+            "summary": "The front-end controllers, models, views, layouts and menu item types.",
+            "emits": false
+        }
+    ]
+}

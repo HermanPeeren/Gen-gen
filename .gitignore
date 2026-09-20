@@ -2,6 +2,7 @@
 /node_modules/
 /build/*.zip
 /build/tmp/
+/build/generated/
 /.phpunit.cache/
 /.phpunit.result.cache
 /.php-cs-fixer.cache

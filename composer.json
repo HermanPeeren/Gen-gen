@@ -39,7 +39,10 @@
         "cs": "phpcs",
         "cs-fix": "php-cs-fixer fix",
         "cs-fix-dry": "php-cs-fixer fix --dry-run --diff",
-        "import-vocabularies": "php tools/import-vocabularies.php"
+        "generate": "php tools/generate.php",
+        "acceptance": "php tools/check-against-extengen.php",
+        "import-vocabularies": "php tools/import-vocabularies.php",
+        "import-generator": "php tools/import-generator.php"
     },
     "config": {
         "sort-packages": true

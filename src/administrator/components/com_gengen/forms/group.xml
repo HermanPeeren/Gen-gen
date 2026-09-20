@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	One generator class: a slice of the rule set, run in its own place.
+
+	A rule set is one file, but it does not run as one thing. Joomla asks a
+	component for a list of generators and runs them in order, and that order is
+	meaning - templates register language strings as they render, so what runs
+	between two groups decides what a language file contains.
+
+	So a group says which rules it runs, by the prefix of their ids, and where
+	in the order it sits.
+
+	The last field is the honest one. Some generators do something no rule can
+	express: build form XML through DOM, assemble a language file, write the
+	sql for a schema that can only be known once every entity has been seen.
+	Those are emitters, they stay hand-written, and a group that has one says so
+	rather than being quietly overwritten by a generated class that dropped it.
+-->
+<form>
+	<fieldset
+		addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+	>
+		<field
+			name="class"
+			type="text"
+			label="COM_GENGEN_GROUP_FIELD_CLASS_LABEL"
+			description="COM_GENGEN_GROUP_FIELD_CLASS_DESC"
+			size="30"
+			required="true"
+			class="groupClass"
+		/>
+
+		<field
+			name="prefix"
+			type="text"
+			label="COM_GENGEN_GROUP_FIELD_PREFIX_LABEL"
+			description="COM_GENGEN_GROUP_FIELD_PREFIX_DESC"
+			size="30"
+			required="true"
+		/>
+
+		<field
+			name="summary"
+			type="text"
+			label="COM_GENGEN_GROUP_FIELD_SUMMARY_LABEL"
+			description="COM_GENGEN_GROUP_FIELD_SUMMARY_DESC"
+			size="70"
+		/>
+
+		<field
+			name="emits"
+			type="list"
+			label="COM_GENGEN_GROUP_FIELD_EMITS_LABEL"
+			description="COM_GENGEN_GROUP_FIELD_EMITS_DESC"
+			default="0"
+		>
+			<option value="0">COM_GENGEN_GROUP_EMITS_NO</option>
+			<option value="1">COM_GENGEN_GROUP_EMITS_YES</option>
+		</field>
+	</fieldset>
+</form>

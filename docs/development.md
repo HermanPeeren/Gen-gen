@@ -21,11 +21,21 @@ src/administrator/components/com_gengen/
     Field/
       VocabularyListField.php  a dropdown whose choices come from the target
       *Field.php               the six of them
+    Generator/
+      Model/ModelledGenerator.php   a generator, as the thing being generated
+      Joomla/RuleFileGenerator.php  the mapping, emitted as data
+      Joomla/GeneratorClassGenerator.php  the classes that carry it
+      Target/JoomlaGeneratorTarget.php    what a modelled generator becomes
+  generator_templates/
+    Joomla/GeneratorClass.php.twig
 tests/
-  Fixtures/                    Exten-gen's real rule set and vocabulary
+  Fixtures/                    Exten-gen's real rule set, vocabulary and generator
   Unit/                        the suite
 tools/
   import-vocabularies.php      refresh those fixtures from a sibling checkout
+  import-generator.php         build the modelled generator from a rule file
+  generate.php                 run a modelled generator through the pipeline
+  check-against-extengen.php   the acceptance criterion
   phpstan-bootstrap.php        the Joomla constants this component reads
 ```
 
@@ -163,9 +173,84 @@ Nothing imports automatically: a fixture that changed underneath a test run
 would turn "this still works" into "this works today". Run it, read the diff,
 commit it like any other change.
 
+## Generating a generator
+
+```bash
+composer generate     # into build/generated/
+```
+
+Four files: the rule file, and one class per group that is only rules.
+
+```
+administrator/components/com_extengen/src/Generator/Rules/joomla6.rules.json
+administrator/components/com_extengen/src/Generator/Joomla6/ComponentGeneral.php
+administrator/components/com_extengen/src/Generator/Joomla6/AdminMVC.php
+administrator/components/com_extengen/src/Generator/Joomla6/SiteMVC.php
+```
+
+**The model here is a description of a generator and the output is a
+generator**, which sounds like a trick and is not: nothing in the core changed
+to allow it. `ModelInterface` is a marker, `Pipeline` never looks inside a
+model, and a target is a structure plus emitters plus a template set. A
+generator happens to be describable that way, so it is one.
+
+The two halves split the same way everything else here does. The rule file is
+the mapping, **emitted** as data — `RuleSet::toJson()` already knows how to
+write it, and rendering JSON from a Twig template would mean reimplementing
+quoting in Twig, which works until somebody's derivation is called
+`refDisplay"Name`. The classes are wiring, **rendered** from a template: a rule
+file does not run by itself, so something has to be a class, claim a slice of
+the rules and sit in the order Joomla runs them in.
+
+**It does not generate the groups that emit.** `AdminGeneral` writes language
+strings and `AdminEntities` writes sql for a schema only knowable once every
+entity has been seen. Neither is expressible as a rule, so neither is generated
+— a generated class replacing them would delete that code and leave something
+that looks complete. The group says `emits` in the model and this skips it.
+That is the same line 2.1 drew between rules and emitters, drawn once more.
+
+## The acceptance criterion
+
+```bash
+composer acceptance
+```
+
+Not a judgement call, and not "the rules round-trip" either — that is necessary
+and would not notice a binding resolving to the wrong thing. The generated
+generator is **run**, over Exten-gen's three golden models, and every file it
+produces is compared with the output Stage 1 approved for the hand-written
+generator it replaces. Both directions: nothing missing, nothing extra.
+
+> 228 files compared, all identical to the approved output.
+
+**It runs in a process of its own**, because the generated classes have the same
+fully qualified names as Exten-gen's hand-written ones — that is the point, they
+are meant to be the same classes — so they are required before anything can
+autoload the originals. A class is defined once per process, so doing this inside
+the suite would make the answer depend on what had already been loaded.
+
+**It compares through `GoldenFiles::normalise()`**, the library's own function,
+which is what Stage 1's golden test uses: line endings, because the approved
+files are committed on Windows, and the trailing newline, because a template's
+output ends with exactly one and a file assembled by `implode()` ends with none.
+Comparing raw bytes reported every sql and language file as different while
+every rendered file matched — an accurate description of the normalisation and a
+poor description of the generator.
+
+**The rule file is byte-identical**, which is asserted separately and is where a
+drift shows up first. That required Exten-gen's committed rule file to become
+canonical `toJson()` output rather than the hand formatting it had: "Gen-gen
+generates this file" is only checkable if there is exactly one way to write a
+given rule set down. Exten-gen has a test that keeps it that way.
+
+**CI checks Exten-gen out beside this repository** so the check actually runs
+there. On a machine with only this repository cloned it skips with an
+explanation — a skipped test that is the whole point of the repository is worse
+than no test, so it must not pass silently.
+
 ## Not here yet
 
 The component's MVC, its manifest, its `script.php`, its package and its release
-workflow. That is step 2.4 of the rework plan, and step 2.3 comes first: generate
-a generator, and check its output byte for byte against the hand-written one it
-replaces.
+workflow. That is step 2.4 of the rework plan. The forms exist and are checked,
+and a generator can be generated and proven from the command line — what is
+missing is a screen to open the forms on.

@@ -34,15 +34,20 @@ target list.
 
 ## Status
 
-Step 2.2 of the [rework plan](https://github.com/HermanPeeren/Exten-gen/blob/main/docs/rework-plan.md):
-the forms and the model behind them, with the proof that a generator modelled
-here is the same generator as one written as a rule file — Exten-gen's own
-twenty-seven rules, through the form shape and back, identical.
+Step 2.3 of the [rework plan](https://github.com/HermanPeeren/Exten-gen/blob/main/docs/rework-plan.md).
+Gen-gen generates a generator, and the generated one produces the same bytes as
+the hand-written one it replaces:
+
+```bash
+composer generate     # a rule file and the classes that carry it
+composer acceptance   # run it over Exten-gen's golden models and compare
+```
+
+> 228 files compared, all identical to the approved output.
 
 Not yet here, and deliberately: the component's MVC, its manifest, its package
-and its release workflow. That is step 2.4. Step 2.3 comes first, and it is the
-one that matters — generate a generator and check its output byte for byte
-against the hand-written one it replaces.
+and its release workflow. That is step 2.4 — the forms exist and are checked,
+but there is no screen to open them on yet.
 
 ## Developing
 

@@ -1,0 +1,1957 @@
+{
+    "generator_name": "Exten-gen: a Joomla 6 component",
+    "target": "joomla6",
+    "output_path": "administrator/components/com_extengen/src/Generator",
+    "php_namespace": "Yepr\\Component\\Extengen\\Administrator\\Generator",
+    "group": {
+        "group0": {
+            "class": "ComponentGeneral",
+            "prefix": "component.",
+            "summary": "The component's manifest: what Joomla reads to install it.",
+            "emits": "0"
+        },
+        "group1": {
+            "class": "AdminGeneral",
+            "prefix": "admin.general.",
+            "summary": "The files every component has, whatever it models.",
+            "emits": "1"
+        },
+        "group2": {
+            "class": "AdminEntities",
+            "prefix": "admin.entity.",
+            "summary": "The database: one table per entity, plus the junctions between them.",
+            "emits": "1"
+        },
+        "group3": {
+            "class": "AdminMVC",
+            "prefix": "admin.mvc.",
+            "summary": "The back-end controllers, models, views and layouts.",
+            "emits": "0"
+        },
+        "group4": {
+            "class": "SiteMVC",
+            "prefix": "site.mvc.",
+            "summary": "The front-end controllers, models, views, layouts and menu item types.",
+            "emits": "0"
+        }
+    },
+    "rule": {
+        "rule0": {
+            "rule_id": "component.manifest",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/componentManifest.xml",
+            "output": "{componentName|lower}.xml",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "description",
+                    "kind": "path",
+                    "value": "extensions.component.component_description",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "backendIndexViews",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "backendIndexViews",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "defaultBackendView",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "defaultBackendView",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "author_name",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.author_name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "author_email",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.author_email",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "author_url",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.author_url",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding10": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding11": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding12": {
+                    "variable": "creation_date",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.creation_date",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule1": {
+            "rule_id": "admin.general.access",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/access.xml",
+            "output": "administrator/components/com_{componentName|lower}/access.xml",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule2": {
+            "rule_id": "admin.general.config",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/config.xml",
+            "output": "administrator/components/com_{componentName|lower}/config.xml",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule3": {
+            "rule_id": "admin.general.license",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/license_GPL3.txt",
+            "output": "administrator/components/com_{componentName|lower}/LICENSE.txt",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule4": {
+            "rule_id": "admin.general.provider",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/services/provider.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/services/provider.php",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule5": {
+            "rule_id": "admin.general.extension",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/src/Extension/ComponentnameComponent.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Extension/{componentName}Component.php",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule6": {
+            "rule_id": "admin.entity.table",
+            "source": "entities",
+            "template": "component/administrator/components/com_componentname/src/Table/Table.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Table/{entityName}Table.php",
+            "condition": {
+                "condition0": {
+                    "operator": "missing",
+                    "path": "isvalueobject",
+                    "value": ""
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "projectNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "entityName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "entityNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "entitySlots",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "getFK",
+                    "kind": "literal",
+                    "value": "",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "m2m_bind",
+                    "kind": "fragments",
+                    "value": "",
+                    "derivation": "manyToMany",
+                    "fragment_template": "component/administrator/components/com_componentname/src/Table/fragments/m2m_bind.php.twig",
+                    "glue": ""
+                },
+                "binding10": {
+                    "variable": "m2m_delete",
+                    "kind": "fragments",
+                    "value": "",
+                    "derivation": "manyToMany",
+                    "fragment_template": "component/administrator/components/com_componentname/src/Table/fragments/m2m_delete.php.twig",
+                    "glue": ""
+                },
+                "binding11": {
+                    "variable": "m2m_localstore",
+                    "kind": "fragments",
+                    "value": "",
+                    "derivation": "manyToMany",
+                    "fragment_template": "component/administrator/components/com_componentname/src/Table/fragments/m2m_localstore.php.twig",
+                    "glue": ""
+                },
+                "binding12": {
+                    "variable": "m2m_relatedstore",
+                    "kind": "fragments",
+                    "value": "",
+                    "derivation": "manyToMany",
+                    "fragment_template": "component/administrator/components/com_componentname/src/Table/fragments/m2m_relatedstore.php.twig",
+                    "glue": ""
+                }
+            }
+        },
+        "rule7": {
+            "rule_id": "admin.mvc.index.controller",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/Controller/AdminIndexController.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Controller/{pageName}Controller.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule8": {
+            "rule_id": "admin.mvc.details.controller",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/Controller/AdminDetailsController.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Controller/{pageName}Controller.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule9": {
+            "rule_id": "admin.mvc.index.model",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/Model/AdminIndexModel.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Model/{pageName}Model.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "entityName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "propertyFieldNames",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminPagePropertyFieldNames",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "foreign",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminPageForeign",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding10": {
+                    "variable": "filters",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminPageFilters",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding11": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule10": {
+            "rule_id": "admin.mvc.details.model",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/Model/AdminDetailsModel.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Model/{pageName}Model.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "entityName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "foreign",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminPageForeign",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule11": {
+            "rule_id": "admin.mvc.index.view",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/View/Index/HtmlView.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/View/{pageName}/HtmlView.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule12": {
+            "rule_id": "admin.mvc.details.view",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/src/View/Details/HtmlView.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/View/{pageName}/HtmlView.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule13": {
+            "rule_id": "admin.mvc.index.layout",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/tmpl/index/default.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/tmpl/{pageName|lower}/default.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "entity",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityArray",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "filters",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "adminPageFilters",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule14": {
+            "rule_id": "admin.mvc.details.layout",
+            "source": "backendPages",
+            "template": "component/administrator/components/com_componentname/tmpl/details/edit.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/tmpl/{pageName|lower}/edit.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "entity",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityArray",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule15": {
+            "rule_id": "admin.mvc.display",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/src/Controller/DisplayController.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Controller/DisplayController.php",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "defaultView",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "defaultBackendIndexPage",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule16": {
+            "rule_id": "site.mvc.index.controller",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/Controller/SiteIndexController.php.twig",
+            "output": "components/com_{componentName|lower}/src/Controller/{pageName}Controller.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule17": {
+            "rule_id": "site.mvc.details.controller",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/Controller/SiteDetailsController.php.twig",
+            "output": "components/com_{componentName|lower}/src/Controller/{pageName}Controller.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule18": {
+            "rule_id": "site.mvc.index.model",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/Model/SiteIndexModel.php.twig",
+            "output": "components/com_{componentName|lower}/src/Model/{pageName}Model.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "entityName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "propertyFieldNames",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteIndexPropertyFieldNames",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "foreign",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteIndexForeign",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding10": {
+                    "variable": "filters",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteIndexFilters",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule19": {
+            "rule_id": "site.mvc.details.model",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/Model/SiteDetailsModel.php.twig",
+            "output": "components/com_{componentName|lower}/src/Model/{pageName}Model.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "entityName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "foreign",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteDetailsForeign",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule20": {
+            "rule_id": "site.mvc.index.view",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/View/Index/HtmlView.php.twig",
+            "output": "components/com_{componentName|lower}/src/View/{pageName}/HtmlView.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule21": {
+            "rule_id": "site.mvc.details.view",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/src/View/Details/HtmlView.php.twig",
+            "output": "components/com_{componentName|lower}/src/View/{pageName}/HtmlView.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule22": {
+            "rule_id": "site.mvc.index.layout",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/tmpl/index/default.php.twig",
+            "output": "components/com_{componentName|lower}/tmpl/{pageName|lower}/default.php",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "linkPageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteLinkPageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding8": {
+                    "variable": "entity",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageEntityArray",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule23": {
+            "rule_id": "site.mvc.index.menuitem",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/tmpl/index/default.xml.twig",
+            "output": "components/com_{componentName|lower}/tmpl/{pageName|lower}/default.xml",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule24": {
+            "rule_id": "site.mvc.details.layout",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/tmpl/details/default.php.twig",
+            "output": "components/com_{componentName|lower}/tmpl/{pageName|lower}/default.php",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule25": {
+            "rule_id": "site.mvc.details.menuitem",
+            "source": "frontendPages",
+            "template": "component/components/com_componentname/tmpl/details/default.xml.twig",
+            "output": "components/com_{componentName|lower}/tmpl/{pageName|lower}/default.xml",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule26": {
+            "rule_id": "site.mvc.display",
+            "source": "root",
+            "template": "component/components/com_componentname/src/Controller/DisplayController.php.twig",
+            "output": "components/com_{componentName|lower}/src/Controller/DisplayController.php",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "defaultView",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "defaultFrontendIndexPage",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        }
+    }
+}
