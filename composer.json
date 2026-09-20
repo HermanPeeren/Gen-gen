@@ -39,6 +39,15 @@
         "cs": "phpcs",
         "cs-fix": "php-cs-fixer fix",
         "cs-fix-dry": "php-cs-fixer fix --dry-run --diff",
+        "update-xml": "php build/update-xml.php",
+        "build": [
+            "@update-xml",
+            "php build/build.php"
+        ],
+        "install-local": [
+            "@build",
+            "php tools/install-local.php"
+        ],
         "generate": "php tools/generate.php",
         "acceptance": "php tools/check-against-extengen.php",
         "import-vocabularies": "php tools/import-vocabularies.php",

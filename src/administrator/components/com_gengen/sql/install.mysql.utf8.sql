@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS `#__gengen_generators` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `target` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `form_data` mediumtext COLLATE utf8mb4_unicode_ci,
+    `published` tinyint(1) NOT NULL DEFAULT '1',
+    `access` int(10) UNSIGNED NOT NULL DEFAULT '1',
+    `ordering` int(11) NOT NULL DEFAULT '0',
+    `checked_out` int(10) UNSIGNED DEFAULT NULL,
+    `checked_out_time` datetime DEFAULT NULL,
+    `created` datetime DEFAULT NULL,
+    `created_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
+    `modified` datetime DEFAULT NULL,
+    `modified_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY `idx_state` (`published`),
+    KEY `idx_access` (`access`),
+    KEY `idx_checkout` (`checked_out`),
+    KEY `idx_target` (`target`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -255,9 +255,97 @@ check for exactly that reason — the fixture carrying the canonical rule file w
 pushed a minute before Exten-gen's copy of it. Nothing was wrong with either;
 they were briefly out of step. The failure message says so.
 
+## The component
+
+```
+src/gengen.xml                 the manifest
+src/script.php                 refuses a bad environment, installs the library
+src/administrator/components/com_gengen/
+  src/Controller/             display, the list, the form, and the Generate task
+  src/Model/                  Generator (edit), Generators (list), Generate (run)
+  src/Table/GeneratorTable    one row: a name, a target, and the model as JSON
+  src/View/, tmpl/            a list and an edit form, and nothing else
+```
+
+**The row is thin on purpose.** A name, a target, and the whole modelled
+generator as JSON in `form_data`. Its shape is the forms; putting it in columns
+would mean maintaining the same structure twice — once as a form, once as a
+schema — with a migration every time a rule gains a field. The name and target
+are columns as well, because a list that had to decode every row's JSON to show
+a name is a list nobody can sort.
+
+**`GeneratorTable::check()` refuses a row that is not a generator.** It reads
+the stored JSON back through `GeneratorDefinition` and then asks for the rules:
+a rule missing its selector, or naming a binding kind that does not exist,
+throws there rather than three screens later when somebody presses Generate.
+Through `setError()` rather than an exception, because `AdminModel::save()`
+inspects `if (!$table->check())` and turns a refused save into a message on the
+form; throwing escapes that and loses the edit.
+
+**`GeneratorModel::loadFormData()` does one thing that is not boilerplate**: it
+tells the form fields which target they are offering, before anything renders.
+A field two subforms deep cannot reach the `target` value at the top of the
+form — `$this->form` there is the subform's own `Form`. See `VocabularyContext`.
+
+## Checking an install
+
+```bash
+composer build && composer install-local   # onto ../Exten-gen/joomla
+php tools/smoke.php                        # is it actually wired up?
+php tools/seed-generator.php               # put one in, and run it there
+npm run cypress                            # and look at the screens
+```
+
+Everything the PHPUnit suite checks is true of the working copy. **`smoke.php`
+asks about the install** — 33 checks, no login needed:
+
+- the namespace map the installer wrote names this component and the library;
+- every class the package shipped resolves through the site's own autoloader;
+- **the component builds through its own `services/provider.php`**, and its MVC
+  factory can find the models. Not `class_exists`: the provider is a closure in
+  a file Joomla includes at run time, and it calls methods on the component that
+  nothing static checks. It called `setRegistry()` on a class that did not have
+  it, which looks like a working component right up until the first request;
+- all six forms build, with their field counts;
+- the table is there, the component is registered, and at least one target
+  published a vocabulary.
+
+That last one failed the first time it ran, correctly: the installed Exten-gen
+predated the vocabulary file, so Gen-gen had nothing to offer and said so.
+
+**`seed-generator.php` puts Exten-gen's own generator into the component and
+runs it there** — through the installed library, the installed templates and the
+installed vocabulary, none of which the suite touches. What comes out is output
+that has already been compared, file for file, with the approved one.
+
+**Cypress is for the one thing none of that can see: whether a screen renders.**
+Exten-gen's views passed every check it had and returned 200 with an empty body,
+for six steps, because `die` is not an error. The specs check that the list comes
+up, that a stored generator opens for editing, and that the dropdowns hold
+`root`, `entities`, `backendPages`, `frontendPages` and `componentNameUcfirst` —
+the target's actual vocabulary rather than empty boxes. An unresolved field type
+does not fail in Joomla, it silently becomes a text box.
+
+The site and the login come from `cypress.env.json`, which is git-ignored. Copy
+`cypress.env.json.dist` and fill it in.
+
+## Releasing
+
+The version lives in `src/gengen.xml` and nowhere else. Bump it, run
+`composer build` to regenerate `updates.xml`, commit both, and push a tag:
+
+```bash
+git tag v0.2.0 && git push origin v0.2.0
+```
+
+`.github/workflows/release.yml` listens for `v*`. It refuses a tag that
+disagrees with the manifest, refuses an `updates.xml` that regenerating would
+change, checks Exten-gen out beside itself so the acceptance criterion actually
+runs, runs every gate, builds with the library bundled, asserts what the package
+contains, and publishes it.
+
 ## Not here yet
 
-The component's MVC, its manifest, its `script.php`, its package and its release
-workflow. That is step 2.4 of the rework plan. The forms exist and are checked,
-and a generator can be generated and proven from the command line — what is
-missing is a screen to open the forms on.
+A front end — there is none, and a modelling tool does not obviously want one.
+Beyond that, Stage 3 is Meta-gen's, and Stage 4 is where Plug-gen adopts the
+core and Exten-gen starts generating itself.

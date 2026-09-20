@@ -55,3 +55,38 @@ parameters:
             - tools/check-against-extengen.php
 
     treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # Four places where Joomla's own declared shape is narrower than what
+        # Joomla's own components call. Each is written this way by core, which
+        # is the test of whether an exception here is the framework's shape or
+        # this project's mistake.
+        #
+        # Factory::getApplication() is typed CMSApplicationInterface, which has
+        # no getUserState() - and every AdminModel in core opens loadFormData()
+        # with exactly this call.
+        -
+            message: '#Call to an undefined method Joomla\\CMS\\Application\\CMSApplicationInterface::getUserState\(\)#'
+
+        # ListModel::getListQuery() is documented as returning DatabaseQuery and
+        # DatabaseDriver::getQuery() returns QueryInterface. Every list model in
+        # core returns the one into the other.
+        -
+            message: '#getListQuery\(\) should return Joomla\\Database\\DatabaseQuery but returns Joomla\\Database\\QueryInterface#'
+
+        # An administrator view's document is an HtmlDocument - that is what
+        # renders the page - but AbstractView::getDocument() is typed to
+        # Document. com_content's Articles view writes
+        # `$this->getDocument()->getToolbar()`.
+        -
+            message: '#Call to an undefined method Joomla\\CMS\\Document\\Document::getToolbar\(\)#'
+
+        # setError() inside a Table's check() is not debt, it is the mechanism.
+        # AdminModel::save() inspects `if (!$table->check())` and turns a
+        # refused save into a message on the form the person is looking at; a
+        # table that threw would escape that and lose the edit. Joomla 6's
+        # com_banners, com_contact, com_menus and com_newsfeeds all write it
+        # this way. It goes when Joomla's own tables do.
+        -
+            message: '#Call to deprecated method setError\(\) of class Joomla\\CMS\\Table\\Table#'
+            path: src/administrator/components/com_gengen/src/Table/*.php

@@ -34,20 +34,21 @@ target list.
 
 ## Status
 
-Step 2.3 of the [rework plan](https://github.com/HermanPeeren/Exten-gen/blob/main/docs/rework-plan.md).
-Gen-gen generates a generator, and the generated one produces the same bytes as
-the hand-written one it replaces:
+Stage 2 of the [rework plan](https://github.com/HermanPeeren/Exten-gen/blob/main/docs/rework-plan.md)
+is complete. Gen-gen is an installable Joomla 6 component: model a generator in
+its forms, press Generate, and get a generator.
 
 ```bash
-composer generate     # a rule file and the classes that carry it
-composer acceptance   # run it over Exten-gen's golden models and compare
+composer build && composer install-local   # onto a local Joomla
+composer generate                          # or from the command line
+composer acceptance                        # and check it against the real thing
 ```
 
 > 228 files compared, all identical to the approved output.
 
-Not yet here, and deliberately: the component's MVC, its manifest, its package
-and its release workflow. That is step 2.4 — the forms exist and are checked,
-but there is no screen to open them on yet.
+That last line is the claim worth making. The generator Gen-gen produces is run
+over Exten-gen's three golden models and every file compared with the output
+Stage 1 approved for the hand-written generator it replaces.
 
 ## Developing
 

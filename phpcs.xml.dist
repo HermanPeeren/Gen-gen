@@ -45,10 +45,23 @@
 	</rule>
 
 	<!--
+		`$_supportNullValue`, `$_tbl`, `$_db`: Joomla's Table API names them,
+		and a subclass does not get to rename its parent's properties.
+	-->
+	<rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+
+	<!--
 		A tool declares its helpers and then does its work in the same file,
-		which is what a script is.
+		which is what a script is. Its helpers are not in a namespace either,
+		for the same reason: nothing autoloads them, and a namespace on a
+		single-file script is ceremony.
 	-->
 	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
 		<exclude-pattern>tools/*</exclude-pattern>
 	</rule>
 </ruleset>

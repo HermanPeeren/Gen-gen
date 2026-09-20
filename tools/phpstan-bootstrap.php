@@ -21,3 +21,13 @@ declare(strict_types=1);
 // Where components are installed, and so where a target's published vocabulary
 // descriptor is found. See VocabularyContext.
 \define('JPATH_ADMINISTRATOR', '');
+
+// The site root, which the generate task strips off a path before showing it to
+// somebody - an absolute path on the server is not an answer to "where did it
+// go".
+\define('JPATH_ROOT', '');
+
+// The libraries directory, where the shared Yepr Gen library is installed and
+// where a site's composer autoloader lives. The tools that boot an installed
+// Joomla read it.
+\define('JPATH_LIBRARIES', '');
