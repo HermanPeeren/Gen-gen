@@ -7,7 +7,7 @@
 	<authorUrl>https://yepr.nl</authorUrl>
 	<copyright>Yepr, Herman Peeren, 2026</copyright>
 	<license>GNU General Public License version 3 or later;</license>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<description>COM_GENGEN_XML_DESCRIPTION</description>
 	<namespace path="src">Yepr\Component\Gengen</namespace>
 	<scriptfile>script.php</scriptfile>
@@ -28,6 +28,10 @@
 	</update>
 	<administration>
 		<menu view="generators">COM_GENGEN</menu>
+		<submenu>
+			<menu link="option=com_gengen&amp;view=generators">COM_GENGEN_SUBMENU_MANAGER_GENERATORS</menu>
+			<menu link="option=com_gengen&amp;view=metalanguages">COM_GENGEN_SUBMENU_MANAGER_METALANGUAGES</menu>
+		</submenu>
 		<files folder="administrator/components/com_gengen">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>

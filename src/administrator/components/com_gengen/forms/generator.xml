@@ -45,6 +45,25 @@
 		/>
 
 		<!--
+			Which metalanguage its rules name concepts from: step 3.4.
+		
+			A rule iterates over things a model holds, and which things exist is a
+			property of the language the model is written in rather than of the
+			target. Beside the target for the same reason the target is at the top:
+			changing either invalidates every rule below.
+		
+			Not required. A generator written before 3.4 names selectors from its
+			target's own vocabulary and keeps working; "no language" is exactly
+			true of one of those.
+		-->
+		<field
+			name="metalanguage"
+			type="Metalanguage"
+			label="COM_GENGEN_GENERATOR_FIELD_METALANGUAGE_LABEL"
+			description="COM_GENGEN_GENERATOR_FIELD_METALANGUAGE_DESC"
+		/>
+
+		<!--
 			Where the generated generator goes, and what namespace its classes
 			live in. A generator is PHP in the end: it has to be told where the
 			component it belongs to keeps its source.

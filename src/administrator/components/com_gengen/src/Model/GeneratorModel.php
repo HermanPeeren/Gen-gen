@@ -16,6 +16,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Yepr\Component\Gengen\Administrator\Generator\GeneratorDefinition;
 use Yepr\Component\Gengen\Administrator\Generator\VocabularyContext;
+use Yepr\Component\Gengen\Administrator\Metalanguage\MetalanguageContext;
+use Yepr\Component\Gengen\Administrator\Metalanguage\Metalanguages;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -93,10 +95,33 @@ class GeneratorModel extends AdminModel
 					$data = $stored;
 				}
 			}
+
+			// The binding lives in two columns and renders through one field,
+			// so it is put back together on the way to the form. Without this
+			// the dropdown on a saved generator shows "no language" however it
+			// was bound - which reads as an answer rather than as a gap.
+			if (\is_object($data)) {
+				$data->metalanguage = (string) ($item->metalanguage_key ?? '') === ''
+					? ''
+					: $item->metalanguage_key . '|' . ($item->metalanguage_version ?? '');
+			}
 		}
 
 		VocabularyContext::useTarget(
 			\is_object($data) ? ($data->target ?? null) : ($data['target'] ?? null)
+		);
+
+		// And which language its rules name concepts from. Same seam, same
+		// reason: a field nested two subforms deep cannot reach the value
+		// chosen at the top of the form.
+		$binding = \is_object($data)
+			? ($data->metalanguage ?? '')
+			: ($data['metalanguage'] ?? '');
+
+		[$key, $version] = array_pad(explode('|', (string) $binding, 2), 2, '');
+
+		MetalanguageContext::useLanguage(
+			$key === '' ? null : Metalanguages::catalogue($this->getDatabase())->forRecord($key, $version)
 		);
 
 		$this->preprocessData('com_gengen.generator', $data);
@@ -119,11 +144,48 @@ class GeneratorModel extends AdminModel
 	 */
 	public function save($data)
 	{
+
+		// Joomla's checkout columns arrive as empty strings, and `checked_out`
+		// is an unsigned int - so MySQL in strict mode refuses the row with
+		// "Incorrect integer value: '' for column 'checked_out'", and the save
+		// fails with the edit still on screen.
+		//
+		// The form already declares `filter="unset"` on both, which is what
+		// core components do and what is supposed to drop them; Joomla's own
+		// `UnsetFilter` returns null, and the value still arrives here as ''.
+		// Whatever puts it back, an empty string is not a user id, so it does
+		// not go to the database as one.
+		//
+		// This was not introduced by the binding below. Gen-gen 0.1.0 cannot
+		// save a generator from the UI at all, and nothing had noticed because
+		// nothing had ever saved one: the browser spec opened the screens and
+		// read them, and every other test works on stored JSON directly.
+		foreach (['checked_out', 'checked_out_time'] as $column) {
+			if (($data[$column] ?? null) === '') {
+				unset($data[$column]);
+			}
+		}
+
 		$definition = GeneratorDefinition::fromFormData($data);
 
 		$data['name']      = $definition->name;
 		$data['target']    = $definition->target;
+		// The binding is a fact about the row rather than part of the modelled
+		// generator, so it is taken out before the JSON is written and put
+		// into the two columns that store it. Two columns rather than one
+		// packed string because they are queried separately: a screen that
+		// asks "is any generator still written for this language" is asking
+		// about both, and a LIKE over a packed value is not that question.
+		$binding = (string) ($data['metalanguage'] ?? '');
+
+		unset($data['metalanguage']);
+
 		$data['form_data'] = json_encode($data, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
+
+		[$key, $version] = array_pad(explode('|', $binding, 2), 2, '');
+
+		$data['metalanguage_key']     = $key;
+		$data['metalanguage_version'] = $version;
 
 		return parent::save($data);
 	}

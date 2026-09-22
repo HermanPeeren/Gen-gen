@@ -47,6 +47,12 @@ describe('the component', () => {
    * text box - which is how "pick one of the target's selectors" turns into
    * "type anything you like". That already happened once, in the field type's
    * capitalisation, and CI caught it only because a test asked.
+   *
+   * This is the answer for a generator with **no metalanguage bound**, which
+   * the seeded one is. From 3.4 a generator may be written for an imported
+   * language, and then the same dropdown holds that language's concepts
+   * instead - `metalanguages.cy.js` binds it, checks exactly that, and puts it
+   * back.
    */
   it('offers the target\'s vocabulary rather than empty boxes', () => {
     cy.visitGengen('generators');

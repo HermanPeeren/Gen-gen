@@ -1,25 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__gengen_generators` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `target` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `form_data` mediumtext COLLATE utf8mb4_unicode_ci,
-    `metalanguage_key` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `metalanguage_version` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `published` tinyint(1) NOT NULL DEFAULT '1',
-    `access` int(10) UNSIGNED NOT NULL DEFAULT '1',
-    `ordering` int(11) NOT NULL DEFAULT '0',
-    `checked_out` int(10) UNSIGNED DEFAULT NULL,
-    `checked_out_time` datetime DEFAULT NULL,
-    `created` datetime DEFAULT NULL,
-    `created_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
-    `modified` datetime DEFAULT NULL,
-    `modified_by` int(10) UNSIGNED NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`),
-    KEY `idx_state` (`published`),
-    KEY `idx_access` (`access`),
-    KEY `idx_checkout` (`checked_out`),
-    KEY `idx_target` (`target`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Step 3.4: a generator is written for a metalanguage.
 
 -- Every metalanguage this site has imported. A generator is written *for* one
 -- of them - a rule names concepts, and a concept only means anything inside a
@@ -43,3 +22,10 @@ CREATE TABLE IF NOT EXISTS `#__gengen_metalanguages` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_language` (`lang_key`, `version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Which metalanguage this generator is written for. A generator that names no
+-- language is one written before 3.4, against whatever the target happened to
+-- offer - which is what an empty value means and what 3.6 replaces.
+ALTER TABLE `#__gengen_generators`
+    ADD COLUMN `metalanguage_key` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN `metalanguage_version` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
