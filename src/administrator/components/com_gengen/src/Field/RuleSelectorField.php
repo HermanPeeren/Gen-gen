@@ -10,7 +10,6 @@
 
 namespace Yepr\Component\Gengen\Administrator\Field;
 
-use Joomla\CMS\Language\Text;
 use Yepr\Component\Gengen\Administrator\Metalanguage\MetalanguageContext;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -51,7 +50,22 @@ class RuleSelectorField extends VocabularyListField
 	protected $type = 'RuleSelector';
 
 	/**
-	 * The target's selectors.
+	 * Every selector a rule may be written for.
+	 *
+	 * The target's own, and one per concept of the language this generator is
+	 * written for - "every Entity" - which the vocabulary adds because the
+	 * language's reference table already knows where each type lives.
+	 *
+	 * **One list, and it has to be one list.** 3.4 offered concepts instead of
+	 * selectors when a language was bound, and nothing added them to the
+	 * vocabulary - so a rule written that way was refused when it ran, by a
+	 * validator checking the name against the vocabulary's list. What a person
+	 * picks here and what Exten-gen accepts are the same question, so they are
+	 * now asked of the same object.
+	 *
+	 * By name rather than by key, which is the opposite of what a reference
+	 * stored in a model does and is right for the opposite reason: a rule file
+	 * is read by people, and `for: c-entity` is a rule nobody can check by eye.
 	 *
 	 * @return  string[]
 	 *
@@ -61,44 +75,16 @@ class RuleSelectorField extends VocabularyListField
 	{
 		$vocabulary = $this->vocabulary();
 
-		return $vocabulary === null ? [] : $vocabulary->selectors;
-	}
+		if ($vocabulary === null) {
+			return [];
+		}
 
-	/**
-	 * The options, which are a language's concepts when there is one.
-	 *
-	 * Overridden rather than folded into `choices()` because these have a
-	 * value that differs from their label - the key is stored and the name is
-	 * shown - and `choices()` is a list of names that are both.
-	 *
-	 * @return  \stdClass[]
-	 *
-	 * @since   0.2.0
-	 */
-	protected function getOptions(): array
-	{
 		$language = MetalanguageContext::current();
 
 		if ($language === null) {
-			return parent::getOptions();
+			return $vocabulary->selectors;
 		}
 
-		$concepts = $language->conceptChoices();
-
-		if ($concepts === []) {
-			// A language imported from a package built before its manifest
-			// named concepts. Falling back to the target's selectors would
-			// offer ER1's names for a language that is not ER1, so it says
-			// there is nothing instead.
-			return [(object) ['value' => '', 'text' => Text::_('COM_GENGEN_FIELD_NO_CONCEPTS')]];
-		}
-
-		$options = [];
-
-		foreach ($concepts as $key => $name) {
-			$options[] = (object) ['value' => $key, 'text' => $name];
-		}
-
-		return $options;
+		return $vocabulary->withConcepts(array_values($language->conceptChoices()))->selectors;
 	}
 }

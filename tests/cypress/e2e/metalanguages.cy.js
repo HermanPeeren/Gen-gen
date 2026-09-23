@@ -126,13 +126,16 @@ describe('metalanguages', () => {
     cy.get('joomla-field-subform template').then(($templates) => {
       const html = [...$templates].map((t) => t.innerHTML).join('');
 
-      expect(html, "the language's concepts, by key").to.contain('c-thing');
-      expect(html, 'and its other one').to.contain('c-part');
-      expect(html, 'labelled by name').to.contain('Thing');
+      // By name, which is what the vocabulary is keyed by and what the
+      // validator will check the rule against. 3.4 offered the concept *key*
+      // here and nothing added it to the vocabulary, so a rule written that way
+      // was refused when it ran.
+      expect(html, "the language's concepts, by name").to.contain('Thing');
+      expect(html, 'and its other one').to.contain('Part');
 
-      // And not the target's own selectors, which is what a generator with no
-      // language bound gets - `component-renders.cy.js` checks that case.
-      expect(html, "not the target's selectors").to.not.contain('backendPages');
+      // The target's own selectors are offered too, in the same list: a
+      // generator written for a language still generates for a target.
+      expect(html, "the target's selectors as well").to.contain('backendPages');
     });
   });
 });

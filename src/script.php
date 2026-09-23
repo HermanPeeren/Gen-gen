@@ -43,7 +43,7 @@ class Com_GengenInstallerScript
     /**
      * The oldest library release that has everything this version calls.
      */
-    private const LIBRARY_MINIMUM = '0.7.0';
+    private const LIBRARY_MINIMUM = '0.10.0';
 
     /**
      * The oldest Joomla this runs on.
