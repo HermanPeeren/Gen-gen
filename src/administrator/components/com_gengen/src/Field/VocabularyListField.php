@@ -87,6 +87,23 @@ abstract class VocabularyListField extends ListField
 
 		$options = [];
 
+		// A list with no empty entry cannot say "nothing", and saying
+		// nothing is what most of these fields do most of the time.
+		//
+		// Without it Joomla renders the first option as the selected one
+		// whenever the stored value is empty, and `showon` does not help:
+		// it hides the field, it does not stop it posting. So opening a
+		// generator and pressing Save rewrote every binding that names no
+		// derivation to name the first one in the list - twenty-seven rules
+		// at a time, silently, on the generator that reproduces Exten-gen.
+		//
+		// Only where the form has not said the field is required. A rule
+		// must name a selector and a template, and offering "nothing" there
+		// would be offering to store a rule that cannot run.
+		if (!$this->required) {
+			$options[] = (object) ['value' => '', 'text' => Text::_('COM_GENGEN_FIELD_NONE')];
+		}
+
 		foreach ($choices as $choice) {
 			$options[] = (object) ['value' => $choice, 'text' => $choice];
 		}
