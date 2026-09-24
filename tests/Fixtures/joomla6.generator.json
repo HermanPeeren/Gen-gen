@@ -1428,6 +1428,14 @@
                     "derivation": "siteIndexFilters",
                     "fragment_template": "",
                     "glue": ""
+                },
+                "binding11": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
                 }
             }
         },
@@ -1513,6 +1521,14 @@
                     "kind": "derive",
                     "value": "",
                     "derivation": "siteDetailsForeign",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding9": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
                     "fragment_template": "",
                     "glue": ""
                 }
@@ -1752,6 +1768,14 @@
                     "derivation": "pageEntityArray",
                     "fragment_template": "",
                     "glue": ""
+                },
+                "binding9": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
                 }
             }
         },
@@ -1852,6 +1876,14 @@
                     "kind": "derive",
                     "value": "",
                     "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding7": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
                     "fragment_template": "",
                     "glue": ""
                 }
