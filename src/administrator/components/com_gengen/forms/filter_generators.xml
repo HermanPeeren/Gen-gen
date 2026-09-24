@@ -24,6 +24,19 @@
 			addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
 			onchange="this.form.submit();"
 		/>
+
+		<!--
+			Which language, since 4.5 - and the list shows the generators written
+			for it *or for anything it derives from*, because a generator bound
+			to a parent runs over a child's models.
+		-->
+		<field
+			name="metalanguage"
+			type="Metalanguage"
+			label="COM_GENGEN_FILTER_METALANGUAGE"
+			addfieldprefix="Yepr\Component\Gengen\Administrator\Field"
+			onchange="this.form.submit();"
+		/>
 	</fields>
 
 	<fields name="list">

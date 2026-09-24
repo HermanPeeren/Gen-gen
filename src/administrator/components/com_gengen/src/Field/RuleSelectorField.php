@@ -10,6 +10,9 @@
 
 namespace Yepr\Component\Gengen\Administrator\Field;
 
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
+use Yepr\Component\Gengen\Administrator\Metalanguage\Metalanguages;
 use Yepr\Component\Gengen\Administrator\Metalanguage\MetalanguageContext;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -67,6 +70,17 @@ class RuleSelectorField extends VocabularyListField
 	 * stored in a model does and is right for the opposite reason: a rule file
 	 * is read by people, and `for: c-entity` is a rule nobody can check by eye.
 	 *
+	 * **And the concepts of everything that language derives from**, since 4.5.
+	 * A language may say it is built on another, and a rule written against a
+	 * parent's concept has to be offerable here or the derivation buys nothing -
+	 * the point of it is that the parent's generators run over the child's
+	 * models, and a generator modelled here is one of those.
+	 *
+	 * Safe to merge rather than to reconcile, because the import refuses a child
+	 * that renamed or dropped a parent's concept. Two languages in one ancestry
+	 * therefore agree about every name they share, and `withConcepts()` skips a
+	 * name the list already has.
+	 *
 	 * @return  string[]
 	 *
 	 * @since   0.1.0
@@ -85,6 +99,14 @@ class RuleSelectorField extends VocabularyListField
 			return $vocabulary->selectors;
 		}
 
-		return $vocabulary->withConcepts(array_values($language->conceptChoices()))->selectors;
+		$concepts = [];
+
+		$ancestry = Metalanguages::ancestry(Factory::getContainer()->get(DatabaseInterface::class));
+
+		foreach ($ancestry->withSelf($language) as $entry) {
+			$concepts = array_merge($concepts, array_values($entry->conceptChoices()));
+		}
+
+		return $vocabulary->withConcepts($concepts)->selectors;
 	}
 }

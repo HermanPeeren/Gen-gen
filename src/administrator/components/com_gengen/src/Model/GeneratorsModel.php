@@ -12,6 +12,7 @@ namespace Yepr\Component\Gengen\Administrator\Model;
 
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseQuery;
+use Yepr\Component\Gengen\Administrator\Metalanguage\Metalanguages;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -46,6 +47,46 @@ class GeneratorsModel extends ListModel
 	}
 
 	/**
+	 * The language keys a filter should match: it, and what it derives from.
+	 *
+	 * A generator bound to a *parent* runs over a *child's* models, so
+	 * choosing the child has to show the parent's generators - which is the
+	 * ancestry of the chosen language, walked the ordinary way.
+	 *
+	 * Not the other direction, which is a different question nobody asked:
+	 * "which languages could this one's generators run over" would be every
+	 * language whose ancestry contains this one, and that is a scan of the
+	 * catalogue rather than a walk from one node.
+	 *
+	 * @param   string  $binding  `key|version`, as the filter stores it.
+	 *
+	 * @return  string[]  Keys to match, never empty.
+	 *
+	 * @since   0.3.0
+	 */
+	private function keysFor(string $binding): array
+	{
+		[$key, $version] = array_pad(explode('|', $binding, 2), 2, '');
+
+		$database = $this->getDatabase();
+		$entry    = Metalanguages::catalogue($database)->forRecord($key, $version);
+
+		if ($entry === null) {
+			// A filter naming a language this site has not got matches that key
+			// and nothing else, which is an empty list rather than every row.
+			return [$key];
+		}
+
+		$keys = [];
+
+		foreach (Metalanguages::ancestry($database)->withSelf($entry) as $node) {
+			$keys[$node->key] = true;
+		}
+
+		return array_keys($keys);
+	}
+
+	/**
 	 * Remember what the list was filtered and ordered by.
 	 *
 	 * @param   string  $ordering   Column to order by.
@@ -57,7 +98,7 @@ class GeneratorsModel extends ListModel
 	 */
 	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
-		foreach (['search', 'published', 'target'] as $filter) {
+		foreach (['search', 'published', 'target', 'metalanguage'] as $filter) {
 			$this->setState(
 				'filter.' . $filter,
 				$this->getUserStateFromRequest($this->context . '.filter.' . $filter, 'filter_' . $filter, '')
@@ -82,6 +123,7 @@ class GeneratorsModel extends ListModel
 			$id . ':' . $this->getState('filter.search')
 			. ':' . $this->getState('filter.published')
 			. ':' . $this->getState('filter.target')
+			. ':' . $this->getState('filter.metalanguage')
 		);
 	}
 
@@ -102,7 +144,7 @@ class GeneratorsModel extends ListModel
 		$query = $db->getQuery(true);
 
 		$columns = [
-			'a.id', 'a.name', 'a.target', 'a.published', 'a.ordering',
+			'a.id', 'a.name', 'a.target', 'a.published', 'a.ordering', 'a.metalanguage_key',
 			'a.checked_out', 'a.checked_out_time', 'a.modified',
 		];
 
@@ -123,6 +165,24 @@ class GeneratorsModel extends ListModel
 		if ($target !== '') {
 			$query->where($db->quoteName('a.target') . ' = :target')
 				->bind(':target', $target);
+		}
+
+		// Which metalanguage, and everything that language derives from: 4.5.
+		//
+		// "The generators I could run over a model in this language" is the
+		// question somebody is actually asking here, and the answer is not
+		// only the ones written for it. A derived language adds and may not
+		// remove or rename, so a generator written for a parent runs over a
+		// child's models - and a list that hid those would make deriving a
+		// thing you could declare and not use.
+		$metalanguage = (string) $this->getState('filter.metalanguage');
+
+		if ($metalanguage !== '') {
+			$query->whereIn(
+				$db->quoteName('a.metalanguage_key'),
+				$this->keysFor($metalanguage),
+				\Joomla\Database\ParameterType::STRING
+			);
 		}
 
 		$search = (string) $this->getState('filter.search');

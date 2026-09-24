@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Yepr\Component\Gengen\Administrator\Metalanguage;
 
 use Joomla\Database\DatabaseInterface;
+use Yepr\Gen\Joomla\Metalanguage\Ancestry;
 use Yepr\Gen\Joomla\Metalanguage\MetalanguageCatalogue;
 use Yepr\Gen\Joomla\Metalanguage\MetalanguageImporter;
 
@@ -59,6 +60,20 @@ final class Metalanguages
     public static function catalogue(DatabaseInterface $database): MetalanguageCatalogue
     {
         return new MetalanguageCatalogue($database, self::TABLE);
+    }
+
+    /**
+     * What a language derives from, walked against this component's table: 4.5.
+     *
+     * Beside `catalogue()` rather than reached through it by every caller, for
+     * the reason `catalogue()` is here at all: the table name is this
+     * component's business and nothing else should have to know it.
+     *
+     * @since  0.3.0
+     */
+    public static function ancestry(DatabaseInterface $database): Ancestry
+    {
+        return self::catalogue($database)->ancestry();
     }
 
     /**
