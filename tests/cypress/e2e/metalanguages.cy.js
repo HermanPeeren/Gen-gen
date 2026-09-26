@@ -28,6 +28,11 @@ const NAME = `Written for Testlang ${Date.now()}`;
 
 describe('metalanguages', () => {
   before(() => {
+    // Nothing left over from an earlier run. These tests name the generator
+    // they create with a timestamp, so every run used to leave a new one and
+    // the site had reached seventeen against one real generator.
+    cy.exec('php tools/forget-test-generators.php');
+
     cy.exec('php tools/make-test-package.php');
 
     // And one built on it: step 4.5. Derived from that package rather than
