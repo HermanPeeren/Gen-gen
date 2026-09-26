@@ -13,13 +13,20 @@
  * `Written for Testlang ${Date.now()}` - every run left a new one rather than
  * reusing the last. The site had reached seventeen against one real generator.
  *
+ * It boots Joomla and uses the site's own database driver, the way every other
+ * tool here does. Not a preference: `JConfig` is a class Joomla writes at
+ * install time and no source file declares, so a tool built on it cannot be
+ * analysed, and `tools/` is analysed with everything else. The first version of
+ * this file did read `configuration.php` into a `JConfig`; it passed on a
+ * machine whose Joomla is an installed site and failed on CI, where the
+ * fetched one never gets installed.
+ *
  * A prefix rather than exact names, which is the one thing here worth being
  * careful about: the timestamp means no two runs agree on the name, so there is
  * nothing exact to match. The prefix is the spec's own literal, and it names a
- * language that only exists as a test fixture - a real generator called
- * "Written for Testlang ..." would be one somebody wrote for the test language
- * on purpose. Everything else on the site is untouched, and what goes is
- * printed.
+ * language that exists only as a test fixture. Every row is printed before it
+ * goes, because a cleanup that quietly took more than it should would look
+ * exactly like one that worked.
  */
 
 declare(strict_types=1);
@@ -29,15 +36,29 @@ $root = \dirname(__DIR__);
 // The specs run against Exten-gen's site, which is where this component is
 // installed; Gen-gen's own `joomla/` is a clean tree for the analyser.
 $site = $argv[1] ?? $root . '/../Exten-gen/joomla';
+$site = realpath($site) ?: $site;
 
 if (!is_file($site . '/configuration.php')) {
-    fwrite(STDERR, "No site at {$site}: this is for the development install.\n");
-    exit(1);
+    fwrite(STDERR, "No Joomla at {$site}: this is for the development install.\n");
+    exit(2);
 }
 
 \defined('_JEXEC') || \define('_JEXEC', 1);
+\define('JPATH_BASE', $site);
 
-require $site . '/configuration.php';
+require_once $site . \DIRECTORY_SEPARATOR . 'includes' . \DIRECTORY_SEPARATOR . 'defines.php';
+require_once $site . \DIRECTORY_SEPARATOR . 'includes' . \DIRECTORY_SEPARATOR . 'framework.php';
+
+$container = Joomla\CMS\Factory::getContainer();
+
+$container->alias('session', 'session.cli')
+    ->alias(Joomla\CMS\Session\Session::class, 'session.cli')
+    ->alias(Joomla\Session\Session::class, 'session.cli')
+    ->alias(Joomla\Session\SessionInterface::class, 'session.cli');
+
+Joomla\CMS\Factory::$application = $container->get(Joomla\Console\Application::class);
+
+// --- Forget -----------------------------------------------------------------
 
 /**
  * How the browser specs name the generators they create.
@@ -45,33 +66,19 @@ require $site . '/configuration.php';
  * `tests/cypress/e2e/metalanguages.cy.js` builds both the plain and the derived
  * one from this, so one prefix covers both.
  */
-const SPEC_GENERATOR_PREFIX = 'Written for Testlang ';
+$prefix = 'Written for Testlang ';
 
-$config = new JConfig();
+/** @var Joomla\Database\DatabaseInterface $db */
+$db = $container->get(Joomla\Database\DatabaseInterface::class);
 
-try {
-    $database = new PDO(
-        'mysql:host=' . $config->host . ';dbname=' . $config->db,
-        $config->user,
-        $config->password
-    );
-} catch (PDOException $e) {
-    fwrite(STDERR, 'Cannot reach the site database: ' . $e->getMessage() . "\n");
-    exit(1);
-}
+$pattern = $db->escape($prefix, true) . '%';
 
-$table = $config->dbprefix . 'gengen_generators';
-
-// Said out loud before anything is removed. A cleanup that silently took more
-// than it should would be indistinguishable from one that worked.
-$listing = $database->prepare("SELECT id, name FROM `{$table}` WHERE name LIKE ? ESCAPE '!'");
-
-// `_` and `%` mean something in LIKE and nothing in the prefix.
-$pattern = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], SPEC_GENERATOR_PREFIX) . '%';
-
-$listing->execute([$pattern]);
-
-$doomed = $listing->fetchAll(PDO::FETCH_ASSOC);
+$doomed = $db->setQuery(
+    $db->getQuery(true)
+        ->select([$db->quoteName('id'), $db->quoteName('name')])
+        ->from($db->quoteName('#__gengen_generators'))
+        ->where($db->quoteName('name') . ' LIKE ' . $db->quote($pattern, false))
+)->loadObjectList();
 
 if ($doomed === []) {
     echo "nothing to forget\n";
@@ -80,11 +87,13 @@ if ($doomed === []) {
 }
 
 foreach ($doomed as $row) {
-    printf("  forgetting %d: %s\n", $row['id'], $row['name']);
+    printf("  forgetting %d: %s\n", (int) $row->id, $row->name);
 }
 
-$delete = $database->prepare("DELETE FROM `{$table}` WHERE name LIKE ? ESCAPE '!'");
+$db->setQuery(
+    $db->getQuery(true)
+        ->delete($db->quoteName('#__gengen_generators'))
+        ->where($db->quoteName('name') . ' LIKE ' . $db->quote($pattern, false))
+)->execute();
 
-$delete->execute([$pattern]);
-
-printf("%d row(s) removed\n", $delete->rowCount());
+printf("%d row(s) removed\n", $db->getAffectedRows());
