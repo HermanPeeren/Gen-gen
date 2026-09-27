@@ -23,7 +23,8 @@
 declare(strict_types=1);
 
 $root = \dirname(__DIR__);
-$site = $argv[1] ?? $root . '/../Exten-gen/joomla';
+$site = $argv[1]
+    ?? ((string) getenv('EXTENGEN_PATH') ? getenv('EXTENGEN_PATH') . '/joomla' : $root . '/../Exten-gen/joomla');
 
 $xml = simplexml_load_file($root . '/src/gengen.xml');
 
