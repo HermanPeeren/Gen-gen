@@ -140,6 +140,7 @@ set that validates against nothing.
 composer test      # phpunit
 composer analyse   # phpstan, level 5
 composer cs        # phpcs: PSR-12, minus what contradicts Joomla
+npx cypress run    # against an install, when anything touches a screen
 ```
 
 `composer analyse` wants a Joomla to resolve `ListField` against. Unpack a
@@ -155,8 +156,17 @@ feature somebody forgot to fill in. A field type it cannot resolve falls back to
 a plain text box, which silently turns a closed list of the target's selectors
 into a place to type anything at all.
 
-What none of it can see is whether the form is usable. That needs the component
-to exist, which is step 2.4.
+What none of it can see is whether the form is usable. That needs a running
+Joomla, which is what the `Browser` workflow arranges: it installs Exten-gen and
+this component onto one fresh site and runs the Cypress specs against it. See
+**Checking an install** for the same thing on a laptop.
+
+`ViewModelNamesTest` is in the family's shared shape rather than a local finding.
+Joomla names a model from what the *view* derives — `AbstractView::getName()`
+lowercases the last namespace segment and `MVCFactory::createModel()` `ucfirst`s
+it back — and treats a `getModel('Name')` argument the same way. Both resolve on
+Windows and fail on Linux, which cost Meta-gen and Exten-gen a 500 each. Nothing
+here is spelled wrongly today; the test is what keeps it that way.
 
 ## The fixtures
 
