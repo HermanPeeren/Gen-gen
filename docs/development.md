@@ -354,6 +354,15 @@ change, checks Exten-gen out beside itself so the acceptance criterion actually
 runs, runs every gate, builds with the library bundled, asserts what the package
 contains, and publishes it.
 
+Once the release is published, the workflow writes the download's SHA-512 into
+`updates.xml` with `php build/update-xml.php --checksum` and commits that to
+`main` itself. Joomla checks a downloaded update against it and warns when
+there is none. It has to come from the workflow because a zip built on another
+machine has different timestamps and line endings, so its hash does not match.
+Pull `main` after a release, before the next version bump. Without `--checksum`
+the script keeps a committed checksum while the download stays the same, and
+drops it when the version changes.
+
 ## Not here yet
 
 A front end — there is none, and a modelling tool does not obviously want one.
