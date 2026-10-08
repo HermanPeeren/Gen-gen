@@ -191,6 +191,25 @@ class GeneratorModel extends AdminModel
 	}
 
 	/**
+	 * Which metalanguage a stored generator is bound to: key and version.
+	 *
+	 * Two columns on the row, not part of the modelled generator, which is why
+	 * `definition()` does not carry it. The package manifest needs it.
+	 *
+	 * @param   int  $id  The generator's id.
+	 *
+	 * @return  array{0: string, 1: string}
+	 *
+	 * @since   0.4.0
+	 */
+	public function binding(int $id): array
+	{
+		$item = $this->getItem($id);
+
+		return [(string) ($item->metalanguage_key ?? ''), (string) ($item->metalanguage_version ?? '')];
+	}
+
+	/**
 	 * The stored generator, as the thing that can be generated from.
 	 *
 	 * @param   integer  $id  The generator's id.

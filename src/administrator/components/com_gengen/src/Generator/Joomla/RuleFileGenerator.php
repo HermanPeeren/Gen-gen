@@ -69,7 +69,7 @@ final class RuleFileGenerator implements GeneratorInterface
         $definition = $model->definition;
 
         $files->add(
-            rtrim($definition->outputPath, '/') . '/Rules/' . $definition->target . '.rules.json',
+            $definition->ruleFilePath(),
             $definition->rules()->toJson() . "\n"
         );
     }

@@ -12,6 +12,7 @@ namespace Yepr\Component\Gengen\Administrator\Model;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Yepr\Component\Gengen\Administrator\Generator\GeneratorDefinition;
+use Yepr\Component\Gengen\Administrator\Generator\GeneratorManifest;
 use Yepr\Component\Gengen\Administrator\Generator\Model\ModelledGenerator;
 use Yepr\Component\Gengen\Administrator\Generator\Target\JoomlaGeneratorTarget;
 use Yepr\Gen\Core\Output\FileCollection;
@@ -76,15 +77,33 @@ class GenerateModel extends BaseDatabaseModel
 	/**
 	 * Generate and write a zip of the result.
 	 *
-	 * @param   GeneratorDefinition  $definition  The modelled generator.
+	 * The zip carries `generator.json` beside what the pipeline produced, since
+	 * 0.4: which target, which metalanguage, and where the rule file is. That is
+	 * what lets Exten-gen import the package and offer it only for projects in
+	 * that language. It is added here rather than by a generator in the target,
+	 * because the binding is on the row and not in the model - and because the
+	 * acceptance check compares what the pipeline produces, which this leaves
+	 * exactly as it was.
+	 *
+	 * @param   GeneratorDefinition  $definition           The modelled generator.
+	 * @param   string               $metalanguageKey      The language it is bound to, '' for none.
+	 * @param   string               $metalanguageVersion  That language's version.
 	 *
 	 * @return  array{path: string, files: FileCollection}
 	 *
 	 * @since   0.1.0
 	 */
-	public function generatePackage(GeneratorDefinition $definition): array
-	{
+	public function generatePackage(
+		GeneratorDefinition $definition,
+		string $metalanguageKey = '',
+		string $metalanguageVersion = ''
+	): array {
 		$files     = $this->generate($definition);
+
+		$files->add(
+			GeneratorManifest::FILE,
+			GeneratorManifest::toJson($definition, $metalanguageKey, $metalanguageVersion)
+		);
 		$directory = $this->outputDirectory() . '/' . $this->slug($definition->name);
 
 		if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {

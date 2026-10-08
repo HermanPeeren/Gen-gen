@@ -121,6 +121,21 @@ final class GeneratorDefinition
     }
 
     /**
+     * Where the rule file goes inside the package.
+     *
+     * One answer, read by the generator that writes the file and by the
+     * manifest that says where it is, so the two cannot name different paths.
+     *
+     * @return  string
+     *
+     * @since   0.4.0
+     */
+    public function ruleFilePath(): string
+    {
+        return ltrim(rtrim($this->outputPath, '/') . '/Rules/' . $this->target . '.rules.json', '/');
+    }
+
+    /**
      * The rules, ready for the engine.
      *
      * @return  RuleSet

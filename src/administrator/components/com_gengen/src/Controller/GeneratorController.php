@@ -61,7 +61,7 @@ class GeneratorController extends FormController
 
 		try {
 			$definition = $generators->definition($id);
-			$result     = $generate->generatePackage($definition);
+			$result     = $generate->generatePackage($definition, ...$generators->binding($id));
 		} catch (\Throwable $e) {
 			// Everything that can go wrong here is a fact about the model -
 			// a rule naming a template that is gone, a binding naming a
