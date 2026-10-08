@@ -146,6 +146,14 @@
                     "derivation": "",
                     "fragment_template": "",
                     "glue": ""
+                },
+                "binding13": {
+                    "variable": "siteViews",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteRouterViews",
+                    "fragment_template": "",
+                    "glue": ""
                 }
             }
         },
@@ -1780,6 +1788,53 @@
             }
         },
         "rule23": {
+            "rule_id": "site.mvc.index.styles",
+            "source": "frontendPages",
+            "template": "component/media/com_componentname/css/page.css.twig",
+            "output": "media/com_{componentName|lower}/css/{pageName|lower}.css",
+            "condition": {
+                "condition0": {
+                    "operator": "equals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "slot",
+                    "kind": "literal",
+                    "value": "site.index.styles",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule24": {
             "rule_id": "site.mvc.index.menuitem",
             "source": "frontendPages",
             "template": "component/components/com_componentname/tmpl/index/default.xml.twig",
@@ -1810,7 +1865,7 @@
                 }
             }
         },
-        "rule24": {
+        "rule25": {
             "rule_id": "site.mvc.details.layout",
             "source": "frontendPages",
             "template": "component/components/com_componentname/tmpl/details/default.php.twig",
@@ -1889,7 +1944,54 @@
                 }
             }
         },
-        "rule25": {
+        "rule26": {
+            "rule_id": "site.mvc.details.styles",
+            "source": "frontendPages",
+            "template": "component/media/com_componentname/css/page.css.twig",
+            "output": "media/com_{componentName|lower}/css/{pageName|lower}.css",
+            "condition": {
+                "condition0": {
+                    "operator": "notEquals",
+                    "path": "page_type",
+                    "value": "indexpage"
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "pageName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "slots",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "pageSlots",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "slot",
+                    "kind": "literal",
+                    "value": "site.details.styles",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule27": {
             "rule_id": "site.mvc.details.menuitem",
             "source": "frontendPages",
             "template": "component/components/com_componentname/tmpl/details/default.xml.twig",
@@ -1920,7 +2022,7 @@
                 }
             }
         },
-        "rule26": {
+        "rule28": {
             "rule_id": "site.mvc.display",
             "source": "root",
             "template": "component/components/com_componentname/src/Controller/DisplayController.php.twig",
@@ -1985,7 +2087,7 @@
                 }
             }
         },
-        "rule27": {
+        "rule29": {
             "rule_id": "site.mvc.router",
             "source": "root",
             "template": "component/components/com_componentname/src/Service/Router.php.twig",
