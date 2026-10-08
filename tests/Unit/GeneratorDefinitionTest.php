@@ -18,8 +18,8 @@ use Yepr\Gen\Core\Rule\Vocabulary;
  * small - a literal empty string, a condition's value, the order of bindings -
  * in a way nobody notices until a generated file is missing a variable.
  *
- * So the fixture is not a toy. It is Exten-gen's own rule set, all
- * twenty-seven rules of it, copied from the component that runs it in
+ * So the fixture is not a toy. It is Exten-gen's own rule set, every
+ * rule of it, copied from the component that runs it in
  * production: every binding kind, every operator, fragments with templates,
  * conditions with and without values. Through the form shape and back, it has
  * to be identical.
@@ -54,7 +54,10 @@ final class GeneratorDefinitionTest extends TestCase
      */
     public function testTheFixtureIsTheWholeGenerator(): void
     {
-        $this->assertCount(27, $this->rules());
+        // A floor rather than the count: the rule set grows - 27 rules until
+        // the site router - and what this guards against is a fixture that
+        // shrank to something trivially small and still round-trips.
+        $this->assertGreaterThanOrEqual(28, \count($this->rules()));
     }
 
     /**

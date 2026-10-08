@@ -14,7 +14,7 @@
  * a project from 18941 bytes to 63 on one click, with a success message on top.
  *
  * The record this opens is the one that would hurt to lose: Exten-gen's own
- * generator, twenty-seven rules and five groups, the same one
+ * generator, all of its rules and groups, the same one
  * `check-against-extengen.php` runs to reproduce the approved output file for
  * file. If a save quietly drops a rule, the acceptance check is the next thing
  * to fail and it will be a long way from the cause.
@@ -23,14 +23,32 @@
  * `beforeEach` runs - a spec about losing data has to own its data.
  */
 
-const RULES = 27;
-const GROUPS = 5;
+// What the stored generator holds, counted out of the fixture `seed-generator.php`
+// stores rather than written here: the numbers were 27 rules and 115 bindings
+// until Exten-gen's target gained its site router, and a count typed into a
+// spec is a count that goes stale without saying why.
+//
+// The bindings that name no derivation are most of them: a binding of kind
+// `path` reads a value, it does not compute one. The number is the point
+// rather than the identity of any one of them - it went to zero on a single
+// Save, and nothing said so.
+let RULES = 0;
+let GROUPS = 0;
+let BINDINGS_WITHOUT_A_DERIVATION = 0;
 
-// Every binding of Exten-gen's generator that names no derivation, which is
-// most of them: a binding of kind `path` reads a value, it does not compute
-// one. The number is the point rather than the identity of any one of them -
-// it went to zero on a single Save, and nothing said so.
-const BINDINGS_WITHOUT_A_DERIVATION = 115;
+before(() => {
+  cy.readFile('tests/Fixtures/joomla6.generator.json').then((generator) => {
+    const rules = Object.values(generator.rule);
+
+    RULES = rules.length;
+    GROUPS = Object.keys(generator.group).length;
+    BINDINGS_WITHOUT_A_DERIVATION = rules
+      .flatMap((rule) => Object.values(rule.binding || {}))
+      .filter((binding) => (binding.derivation || '') === '').length;
+
+    expect(RULES, 'the fixture holds a generator').to.be.greaterThan(20);
+  });
+});
 
 const openTheGenerator = () => {
   cy.visit('/administrator/index.php?option=com_gengen&task=generator.edit&id=1');

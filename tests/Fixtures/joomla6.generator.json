@@ -1984,6 +1984,71 @@
                     "glue": ""
                 }
             }
+        },
+        "rule27": {
+            "rule_id": "site.mvc.router",
+            "source": "root",
+            "template": "component/components/com_componentname/src/Service/Router.php.twig",
+            "output": "components/com_{componentName|lower}/src/Service/Router.php",
+            "condition": [],
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentName",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "views",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "siteRouterViews",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
         }
     }
 }

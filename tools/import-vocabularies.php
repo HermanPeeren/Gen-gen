@@ -7,7 +7,7 @@
  *   php tools/import-vocabularies.php ../Exten-gen
  *
  * The suite's proof is a round trip of a real generator: Exten-gen's own rule
- * set, twenty-seven rules of it, through the form shape and back. That is only
+ * set, every rule of it, through the form shape and back. That is only
  * a proof while the copy here is the file Exten-gen actually runs. A fixture
  * that quietly ages into a simpler rule set than the real one still passes, and
  * stops meaning anything.

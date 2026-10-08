@@ -90,7 +90,9 @@ final class GeneratedGeneratorTest extends TestCase
 
         $rules = RuleSet::fromJson($generated);
 
-        $this->assertCount(27, $rules);
+        // As many as the rule file imported from Exten-gen holds - a number
+        // written here went stale the day the target gained its router rule.
+        $this->assertCount(\count(RuleSet::fromFile($this->fixture('joomla6.rules.json'))), $rules);
         $this->assertSame($rules->toJson() . "\n", $generated);
     }
 
