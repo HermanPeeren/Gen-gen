@@ -156,7 +156,7 @@ class Com_GengenInstallerScript
         // Not fatal. The component is installed; it simply will not generate
         // until the library is there, and saying so is more use than rolling
         // back everything the user just did.
-        $this->say('The Yepr Gen library could not be installed. Gen-gen needs it in order to generate.', 'warning');
+        $this->say('The Yepr Gen library could not be installed. The Generator Generator needs it in order to generate.', 'warning');
 
         return true;
     }

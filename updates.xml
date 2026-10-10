@@ -5,16 +5,15 @@
 -->
 <updates>
 	<update>
-		<name>Gen-gen</name>
-		<description>Model a Joomla extension, and generate it.</description>
+		<name>Generator Generator</name>
+		<description>Models generators: a generator is a list of rules saying which source elements produce which file, from which template. Reads what a target may say from that target's own published vocabulary, so it depends on none of the components it generates for.</description>
 		<element>com_gengen</element>
 		<type>component</type>
 		<client>administrator</client>
-		<version>0.4.0</version>
+		<version>0.4.1</version>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/HermanPeeren/Gen-gen/releases/download/v0.4.0/com_gengen-0.4.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/HermanPeeren/Gen-gen/releases/download/v0.4.1/com_gengen-0.4.1.zip</downloadurl>
 		</downloads>
-		<sha512>3238d2ffec093a8ecd023e78fa45eb5326ad717f6380085ec30aa22d2fe48d9d7677245f0e79bc7c1d490e9a3c7d973c576bc64c32b52eb73d3a34b1290ee755</sha512>
 		<maintainer>Herman Peeren</maintainer>
 		<maintainerurl>https://yepr.nl</maintainerurl>
 		<targetplatform name="joomla" version="6\..*"/>
