@@ -219,6 +219,30 @@ entity has been seen. Neither is expressible as a rule, so neither is generated
 that looks complete. The group says `emits` in the model and this skips it.
 That is the same line 2.1 drew between rules and emitters, drawn once more.
 
+## A generator that extends another
+
+A generator may say which generator it **extends** (step 5.9 of the plan), by
+its id on the Extension Generator: `joomla6` for the Joomla 6 generator. It then
+holds only what it adds. Every rule of the parent runs as well, and a rule here
+with the id of one of the parent's takes that rule's place. Nothing here composes
+the two: the package says `extends`, and the Extension Generator does the rest
+when it runs it.
+
+The manifest is format 2 when a generator extends something and format 1 when
+it does not, so an Extension Generator from before 5.9 refuses only the packages
+it would otherwise read wrongly.
+
+The LedgerLang generator is the example, and it is the one the Extension
+Generator ships: three rules for LedgerLang's account roles and posting rules.
+
+```bash
+php tools/import-generator.php tests/Fixtures/ledgerlang.manifest.json
+```
+
+`ExtendedGeneratorTest` checks that it writes the rule file the Extension
+Generator ships, byte for byte, and that the Extension Generator reads its
+package as a generator that extends `joomla6`.
+
 ## The acceptance criterion
 
 ```bash

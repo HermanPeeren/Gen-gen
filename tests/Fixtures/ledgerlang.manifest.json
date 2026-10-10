@@ -1,0 +1,16 @@
+{
+    "generator_name": "Joomla component with posting rules",
+    "target": "joomla6",
+    "extends": "joomla6",
+    "rules": "ledgerlang.rules.json",
+    "output_path": "administrator/components/com_extengen/src/Generator",
+    "php_namespace": "Yepr\\Component\\Extengen\\Administrator\\Generator",
+    "group": [
+        {
+            "class": "AdminGeneral",
+            "prefix": "admin.general.",
+            "summary": "The files every component has: for LedgerLang, its account roles and posting rules too.",
+            "emits": true
+        }
+    ]
+}

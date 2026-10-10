@@ -1,0 +1,222 @@
+{
+    "generator_name": "Joomla component with posting rules",
+    "target": "joomla6",
+    "output_path": "administrator/components/com_extengen/src/Generator",
+    "php_namespace": "Yepr\\Component\\Extengen\\Administrator\\Generator",
+    "extends": "joomla6",
+    "group": {
+        "group0": {
+            "class": "AdminGeneral",
+            "prefix": "admin.general.",
+            "summary": "The files every component has: for LedgerLang, its account roles and posting rules too.",
+            "emits": "1"
+        }
+    },
+    "rule": {
+        "rule0": {
+            "rule_id": "admin.general.ledger.roles",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/src/Ledger/AccountRoles.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Ledger/AccountRoles.php",
+            "condition": {
+                "condition0": {
+                    "operator": "has",
+                    "path": "account_roles",
+                    "value": ""
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "roles",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "ledgerAccountRoles",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule1": {
+            "rule_id": "admin.general.ledger.line",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/src/Ledger/JournalLine.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Ledger/JournalLine.php",
+            "condition": {
+                "condition0": {
+                    "operator": "has",
+                    "path": "posting_rules",
+                    "value": ""
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        },
+        "rule2": {
+            "rule_id": "admin.general.ledger.postingrules",
+            "source": "root",
+            "template": "component/administrator/components/com_componentname/src/Ledger/PostingRules.php.twig",
+            "output": "administrator/components/com_{componentName|lower}/src/Ledger/PostingRules.php",
+            "condition": {
+                "condition0": {
+                    "operator": "has",
+                    "path": "posting_rules",
+                    "value": ""
+                }
+            },
+            "binding": {
+                "binding0": {
+                    "variable": "componentName",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "componentNameUcfirst",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding1": {
+                    "variable": "projectName",
+                    "kind": "path",
+                    "value": "name",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding2": {
+                    "variable": "version",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.version",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding3": {
+                    "variable": "copyright",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.copyright",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding4": {
+                    "variable": "license",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.license",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding5": {
+                    "variable": "company_namespace",
+                    "kind": "path",
+                    "value": "extensions.component.manifest.company_namespace",
+                    "derivation": "",
+                    "fragment_template": "",
+                    "glue": ""
+                },
+                "binding6": {
+                    "variable": "rules",
+                    "kind": "derive",
+                    "value": "",
+                    "derivation": "ledgerPostingRules",
+                    "fragment_template": "",
+                    "glue": ""
+                }
+            }
+        }
+    }
+}
