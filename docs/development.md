@@ -1,6 +1,6 @@
-# Developing Gen-gen
+# Developing the Generator Generator (Gen-gen)
 
-A Joomla component that models generators. What a generator *is* — the rule
+The Generator Generator is a Joomla component that models generators. What a generator *is* — the rule
 vocabulary, and the engine that runs it — lives in the shared library; this
 repository is the modelling of one.
 
@@ -76,7 +76,7 @@ fields that kind uses:
 **`GeneratorDefinition` is the translation, and it is the only one.** A generator
 modelled here and a generator committed as a rule file have to be the same
 generator or step 2.3 has nothing to compare, so the proof is a round trip:
-Exten-gen's own twenty-seven rules, through the form shape and back, identical —
+The Extension Generator's own rules, through the form shape and back, identical —
 and then checked against the target's vocabulary, because two arrays matching
 would prove nothing if both were nonsense.
 
@@ -113,11 +113,11 @@ That is what makes this a modelling tool rather than a JSON editor with rounded
 corners. The engine enforces a closed vocabulary; these fields *offer* it, so a
 rule naming something that does not exist cannot be written in the first place.
 
-**A target publishes its vocabulary; Gen-gen finds it.** Exten-gen's
+**A target publishes its vocabulary; the Generator Generator finds it.** Exten-gen's
 `build/vocabulary.php` writes `joomla6.vocabulary.json` from its live registries
 and its template directory, and ships it inside its own component.
 `VocabularyLibrary` globs for `*.vocabulary.json` under the installed
-components. So Gen-gen depends on nothing it models generators for, and a new
+components. So the Generator Generator depends on nothing it models generators for, and a new
 target appears in the list by being installed.
 
 **`VocabularyContext` is ambient state, which deserves an explanation rather
@@ -320,10 +320,10 @@ asks about the install** — 33 checks, no login needed:
 - the table is there, the component is registered, and at least one target
   published a vocabulary.
 
-That last one failed the first time it ran, correctly: the installed Exten-gen
-predated the vocabulary file, so Gen-gen had nothing to offer and said so.
+That last one failed the first time it ran, correctly: the installed Extension
+Generator predated the vocabulary file, so the Generator Generator had nothing to offer and said so.
 
-**`seed-generator.php` puts Exten-gen's own generator into the component and
+**`seed-generator.php` puts the Extension Generator's own generator into the component and
 runs it there** — through the installed library, the installed templates and the
 installed vocabulary, none of which the suite touches. What comes out is output
 that has already been compared, file for file, with the approved one.
@@ -366,5 +366,5 @@ drops it when the version changes.
 ## Not here yet
 
 A front end — there is none, and a modelling tool does not obviously want one.
-Beyond that, Stage 3 is Meta-gen's, and Stage 4 is where Plug-gen adopts the
-core and Exten-gen starts generating itself.
+Beyond that, Stage 3 is the Metalanguage Generator's, and Stage 4 is where
+Plug-gen adopts the core and the Extension Generator starts generating itself.
