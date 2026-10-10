@@ -101,6 +101,9 @@ describe('a saved generator', () => {
 
     cy.get('#jform_generator_name').should('have.value', 'Exten-gen: a Joomla 6 component');
 
+    // On the screen and empty: this generator extends nothing (step 5.9).
+    cy.get('#jform_extends').should('be.visible').and('have.value', '');
+
     cy.document().then((doc) => {
       expect(rowsOnScreen(doc, 'rule'), 'the stored rules').to.equal(RULES);
       expect(rowsOnScreen(doc, 'group'), 'the stored groups').to.equal(GROUPS);

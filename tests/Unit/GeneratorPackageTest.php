@@ -67,7 +67,10 @@ final class GeneratorPackageTest extends TestCase
         $files    = $this->package()->all();
         $manifest = json_decode($files[GeneratorManifest::FILE], true, 512, \JSON_THROW_ON_ERROR);
 
-        $this->assertSame(GeneratorManifest::FORMAT, $manifest['format']);
+        // Format 1: it extends nothing, and an Extension Generator from before
+        // 5.9 reads it as it always did.
+        $this->assertSame(GeneratorManifest::FORMAT_WITHOUT_EXTENDS, $manifest['format']);
+        $this->assertArrayNotHasKey('extends', $manifest);
         $this->assertSame('joomla6', $manifest['target']);
         $this->assertSame(['key' => 'ER1', 'version' => '1.2'], $manifest['metalanguage']);
         $this->assertArrayHasKey($manifest['rules'], $files, 'the rule file the manifest names is in the package');

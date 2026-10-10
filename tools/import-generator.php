@@ -5,6 +5,7 @@
  *
  *   php tools/import-generator.php
  *   php tools/import-generator.php tests/Fixtures/joomla6.manifest.json
+ *   php tools/import-generator.php tests/Fixtures/ledgerlang.manifest.json
  *
  * This is an import, and saying so is the point. The model is meant to be the
  * source: somebody fills in the forms and a generator comes out. Exten-gen's
@@ -17,6 +18,11 @@
  * comes from a small manifest beside it, because none of that is recoverable
  * from a rule file. A rule id says `admin.mvc.index.model`; nothing in it says
  * where the prefix stops.
+ *
+ * A manifest may also say `extends` and `rules` (step 5.9): the LedgerLang
+ * generator extends the Joomla 6 one and holds only the rules it adds, in
+ * `ledgerlang.rules.json`, so it names its rule file rather than taking the
+ * target's. The output is named after the rule file: `ledgerlang.generator.json`.
  *
  * The result is committed, and `GeneratedGeneratorTest` fails when running this
  * again would change it. That is what keeps the fixture from quietly ageing
@@ -40,7 +46,8 @@ if (!\is_array($declared)) {
     exit(1);
 }
 
-$rulesPath = \dirname($manifest) . '/' . $declared['target'] . '.rules.json';
+$rulesName = basename((string) ($declared['rules'] ?? $declared['target'] . '.rules.json'));
+$rulesPath = \dirname($manifest) . '/' . $rulesName;
 
 if (!is_file($rulesPath)) {
     fwrite(STDERR, "No rule file at {$rulesPath}. Run composer import-vocabularies first.\n");
@@ -53,10 +60,11 @@ $definition = GeneratorDefinition::fromRuleSet(
     RuleSet::fromFile($rulesPath),
     (array) $declared['group'],
     (string) $declared['output_path'],
-    (string) $declared['php_namespace']
+    (string) $declared['php_namespace'],
+    (string) ($declared['extends'] ?? '')
 );
 
-$out = \dirname($manifest) . '/' . $declared['target'] . '.generator.json';
+$out = \dirname($manifest) . '/' . basename($rulesName, '.rules.json') . '.generator.json';
 
 file_put_contents(
     $out,

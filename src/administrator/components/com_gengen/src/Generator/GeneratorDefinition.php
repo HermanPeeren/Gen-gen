@@ -44,6 +44,7 @@ final class GeneratorDefinition
      * @param   array<int, array<string, mixed>>  $groups  The generator classes, in the order they run.
      * @param   string                            $outputPath    Where in the package the generator's own source goes.
      * @param   string                            $phpNamespace  The namespace its classes live in.
+     * @param   string                            $extends       The generator this one extends, '' for none: step 5.9.
      *
      * @since   0.1.0
      */
@@ -53,7 +54,8 @@ final class GeneratorDefinition
         private readonly array $rules,
         private readonly array $groups = [],
         public readonly string $outputPath = '',
-        public readonly string $phpNamespace = ''
+        public readonly string $phpNamespace = '',
+        public readonly string $extends = ''
     ) {
     }
 
@@ -91,7 +93,8 @@ final class GeneratorDefinition
             $rules,
             $groups,
             (string) ($data['output_path'] ?? ''),
-            (string) ($data['php_namespace'] ?? '')
+            (string) ($data['php_namespace'] ?? ''),
+            trim((string) ($data['extends'] ?? ''))
         );
     }
 
@@ -104,6 +107,7 @@ final class GeneratorDefinition
      * @param   array<int, array<string, mixed>>  $groups  The generator classes, in the order they run.
      * @param   string                            $outputPath    Where the generator's own source goes.
      * @param   string                            $phpNamespace  The namespace its classes live in.
+     * @param   string                            $extends       The generator it extends, '' for none.
      *
      * @return  self
      *
@@ -115,9 +119,10 @@ final class GeneratorDefinition
         RuleSet $rules,
         array $groups = [],
         string $outputPath = '',
-        string $phpNamespace = ''
+        string $phpNamespace = '',
+        string $extends = ''
     ): self {
-        return new self($name, $target, $rules->toArray(), $groups, $outputPath, $phpNamespace);
+        return new self($name, $target, $rules->toArray(), $groups, $outputPath, $phpNamespace, $extends);
     }
 
     /**
@@ -199,11 +204,14 @@ final class GeneratorDefinition
             ];
         }
 
+        // `extends` only when there is one, so a generator that extends nothing
+        // saves exactly what it saved before 5.9.
         return [
             'generator_name' => $this->name,
             'target'         => $this->target,
             'output_path'    => $this->outputPath,
             'php_namespace'  => $this->phpNamespace,
+        ] + ($this->extends === '' ? [] : ['extends' => $this->extends]) + [
             'group'          => $groups,
             'rule'           => $rules,
         ];

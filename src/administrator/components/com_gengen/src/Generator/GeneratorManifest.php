@@ -41,11 +41,24 @@ final class GeneratorManifest
     public const FILE = 'generator.json';
 
     /**
-     * The format written.
+     * The newest format written: 2, which added `extends` (step 5.9).
+     *
+     * A generator that extends nothing is still written as format 1, which is
+     * exactly what it is. Only a package that needs `extends` asks the reader
+     * for format 2, so an Extension Generator from before 5.9 refuses that one
+     * - rather than importing a child as if it stood alone, with a handful of
+     * rules and none of its parent's - and goes on reading every other one.
      *
      * @since  0.4.0
      */
-    public const FORMAT = 1;
+    public const FORMAT = 2;
+
+    /**
+     * The format of a generator that extends nothing.
+     *
+     * @since  0.5.0
+     */
+    public const FORMAT_WITHOUT_EXTENDS = 1;
 
     /**
      * The manifest for one generator.
@@ -64,11 +77,12 @@ final class GeneratorManifest
         string $metalanguageVersion = ''
     ): array {
         return [
-            'format'       => self::FORMAT,
+            'format'       => $definition->extends === '' ? self::FORMAT_WITHOUT_EXTENDS : self::FORMAT,
             'key'          => self::slug($definition->name),
             'name'         => $definition->name,
             'target'       => $definition->target,
             'metalanguage' => ['key' => $metalanguageKey, 'version' => $metalanguageVersion],
+        ] + ($definition->extends === '' ? [] : ['extends' => $definition->extends]) + [
             'rules'        => $definition->ruleFilePath(),
             'groups'       => array_map(
                 static fn (array $group): array => [

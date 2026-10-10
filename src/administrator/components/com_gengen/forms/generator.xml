@@ -64,6 +64,23 @@
 		/>
 
 		<!--
+			Which generator this one extends: step 5.9. By its id on the
+			Extension Generator - `joomla6` for the Joomla 6 generator it ships.
+			Every rule of that generator runs, and the rules below are added to
+			them; a rule here with the id of one of its rules takes that rule's
+			place. Empty for a generator that stands on its own, which is every
+			generator modelled before 5.9.
+		-->
+		<field
+			name="extends"
+			type="text"
+			label="COM_GENGEN_GENERATOR_FIELD_EXTENDS_LABEL"
+			description="COM_GENGEN_GENERATOR_FIELD_EXTENDS_DESC"
+			size="40"
+			filter="cmd"
+		/>
+
+		<!--
 			Where the generated generator goes, and what namespace its classes
 			live in. A generator is PHP in the end: it has to be told where the
 			component it belongs to keeps its source.
