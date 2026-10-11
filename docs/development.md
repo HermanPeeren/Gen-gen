@@ -326,7 +326,7 @@ form — `$this->form` there is the subform's own `Form`. See `VocabularyContext
 ```bash
 composer build && composer install-local   # onto ../Exten-gen/joomla
 php tools/smoke.php                        # is it actually wired up?
-php tools/seed-generator.php               # put one in, and run it there
+php tools/seed-generator.php               # put the shipped ones in, and run them there
 npm run cypress                            # and look at the screens
 ```
 
@@ -347,10 +347,15 @@ asks about the install** — 33 checks, no login needed:
 That last one failed the first time it ran, correctly: the installed Extension
 Generator predated the vocabulary file, so the Generator Generator had nothing to offer and said so.
 
-**`seed-generator.php` puts the Extension Generator's own generator into the component and
-runs it there** — through the installed library, the installed templates and the
-installed vocabulary, none of which the suite touches. What comes out is output
-that has already been compared, file for file, with the approved one.
+**`seed-generator.php` puts the Extension Generator's rule-driven generators into the
+component and runs them there** — through the installed library, the installed
+templates and the installed vocabulary, none of which the suite touches. It seeds
+every `tests/Fixtures/*.generator.json`: the Joomla 6 generator, whose output has
+already been compared file for file with the approved one, and the LedgerLang
+generator that extends it. So both are on the Generators list as models to open and
+edit, not only as ready-made generators on the Extension Generator's side. The
+WordPress and Drupal generators are not rules yet; see
+[built-in-generators.md](built-in-generators.md).
 
 **Cypress is for the one thing none of that can see: whether a screen renders.**
 Exten-gen's views passed every check it had and returned 200 with an empty body,

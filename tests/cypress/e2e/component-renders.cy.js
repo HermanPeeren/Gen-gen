@@ -41,6 +41,28 @@ describe('the component', () => {
   });
 
   /**
+   * The Extension Generator's LedgerLang generator, as a model: it extends the
+   * Joomla 6 one and holds only its own three rules (step 5.9). Seeded beside
+   * the Joomla 6 generator by tools/seed-generator.php.
+   */
+  it('opens the generator that extends the Joomla 6 one', () => {
+    cy.visitGengen('generators');
+
+    cy.contains('#generatorList tbody tr th a', 'Joomla component with posting rules').click();
+
+    cy.shouldHaveRendered();
+    cy.get('#jform_generator_name').should('have.value', 'Joomla component with posting rules');
+    cy.get('#jform_extends').should('have.value', 'joomla6');
+    cy.get('#generator-form input[name$="[rule_id]"]').then((inputs) => {
+      expect([...inputs].map((input) => input.value)).to.deep.equal([
+        'admin.general.ledger.roles',
+        'admin.general.ledger.line',
+        'admin.general.ledger.postingrules',
+      ]);
+    });
+  });
+
+  /**
    * The point of the whole thing: a rule is filled in from a list, not typed.
    *
    * An unresolved field type does not fail in Joomla, it silently becomes a
