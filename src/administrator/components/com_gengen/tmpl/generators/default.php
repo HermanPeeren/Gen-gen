@@ -19,12 +19,34 @@ use Joomla\CMS\Session\Session;
 
 /** @var \Yepr\Component\Gengen\Administrator\View\Generators\HtmlView $this */
 
-$this->getDocument()->getWebAssetManager()->useScript('table.columns')->useScript('multiselect');
+$this->getDocument()->getWebAssetManager()->useScript('table.columns')->useScript('multiselect')->useScript('bootstrap.collapse');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_gengen&view=generators'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_gengen&view=generators'); ?>" method="post" name="adminForm" id="adminForm"
+      enctype="multipart/form-data">
 	<div class="row">
 		<div class="col-md-12">
 			<div id="j-main-container" class="j-main-container">
+				<?php // The Import button's panel: hidden until the toolbar button opens it. ?>
+				<div class="collapse mb-3" id="gengen-import">
+					<fieldset class="options-form">
+						<legend><?php echo Text::_('COM_GENGEN_GENERATOR_IMPORT'); ?></legend>
+
+						<p class="small text-muted">
+							<?php echo Text::_('COM_GENGEN_GENERATOR_IMPORT_DESC'); ?>
+						</p>
+
+						<div class="input-group">
+							<input class="form-control" type="file" name="package" id="package" accept=".zip"
+								aria-label="<?php echo $this->escape(Text::_('COM_GENGEN_GENERATOR_IMPORT')); ?>">
+							<button class="btn btn-primary" type="button" id="gengen-import-submit"
+								onclick="Joomla.submitbutton('generators.import');">
+								<span class="icon-upload" aria-hidden="true"></span>
+								<?php echo Text::_('COM_GENGEN_TOOLBAR_IMPORT'); ?>
+							</button>
+						</div>
+					</fieldset>
+				</div>
+
 				<?php if ($this->targets === []) : ?>
 					<div class="alert alert-warning">
 						<h4><?php echo Text::_('COM_GENGEN_NO_TARGETS_HEADING'); ?></h4>

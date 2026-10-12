@@ -41,6 +41,20 @@ final class GeneratorManifest
     public const FILE = 'generator.json';
 
     /**
+     * The model's name inside the zip: the form data, as the Import button reads it back.
+     *
+     * The rule file is the generator as it runs. It does not say which classes
+     * slice it, where their source goes or what each group is for, and those
+     * are what a person fills in on the form. So the package carries the form
+     * data as well, and importing a package this component wrote gives back
+     * exactly the generator that was generated. The Extension Generator reads
+     * `generator.json` and the rule file and leaves this alone.
+     *
+     * @since  0.6.0
+     */
+    public const MODEL = 'model.json';
+
+    /**
      * The newest format written: 2, which added `extends` (step 5.9).
      *
      * A generator that extends nothing is still written as format 1, which is
@@ -107,6 +121,19 @@ final class GeneratorManifest
     ): string {
         return json_encode(
             self::for($definition, $metalanguageKey, $metalanguageVersion),
+            \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR
+        ) . "\n";
+    }
+
+    /**
+     * The model as the file it is written to: `GeneratorDefinition::toFormData()`.
+     *
+     * @since  0.6.0
+     */
+    public static function modelJson(GeneratorDefinition $definition): string
+    {
+        return json_encode(
+            $definition->toFormData(),
             \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR
         ) . "\n";
     }

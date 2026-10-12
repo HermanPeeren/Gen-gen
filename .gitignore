@@ -24,3 +24,5 @@
 /tests/cypress/downloads/
 /tests/cypress/fixtures/metalanguage.zip
 /tests/cypress/fixtures/derived.zip
+/tests/cypress/fixtures/ledgerlang-generator.zip
+/tests/cypress/fixtures/ledgerlang-generator-broken.zip

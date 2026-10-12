@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'cypress';
 
 /**
@@ -34,6 +35,12 @@ export default defineConfig({
           console.log(message);
 
           return null;
+        },
+
+        // Whether a file is there: a spec that can use a sibling checkout's
+        // package says so when it is missing, rather than failing on CI.
+        exists(path) {
+          return existsSync(path);
         },
       });
 

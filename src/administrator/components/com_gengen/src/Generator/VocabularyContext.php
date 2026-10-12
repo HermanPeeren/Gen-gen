@@ -85,6 +85,10 @@ final class VocabularyContext
      * rule file it constrains. Finding them is a glob rather than a registry
      * because a registry would be a third place to keep the same list.
      *
+     * Since 0.6 the component hands over the library its container holds when
+     * it boots, so on a request this is that one. The fallback is for code
+     * that runs without the component booted: a tool, or a test.
+     *
      * @return  VocabularyLibrary
      *
      * @since   0.1.0
@@ -98,7 +102,7 @@ final class VocabularyContext
         $directories = [];
 
         if (\defined('JPATH_ADMINISTRATOR')) {
-            $directories = glob(JPATH_ADMINISTRATOR . '/components/*/src/Generator/Rules', \GLOB_ONLYDIR) ?: [];
+            $directories = VocabularyLibrary::directoriesUnder(JPATH_ADMINISTRATOR);
         }
 
         return self::$library = new VocabularyLibrary(...$directories);

@@ -60,6 +60,25 @@ final class VocabularyLibrary
     }
 
     /**
+     * Where a Joomla site's targets keep their descriptors.
+     *
+     * Every component's `src/Generator/Rules`, which is where a target keeps
+     * its rule file and publishes the vocabulary beside it. One answer, read
+     * by the service provider and by `VocabularyContext`, so the import and
+     * the form fields look in the same places.
+     *
+     * @param   string  $administrator  The site's administrator directory.
+     *
+     * @return  string[]
+     *
+     * @since   0.6.0
+     */
+    public static function directoriesUnder(string $administrator): array
+    {
+        return glob(rtrim($administrator, '/\\') . '/components/*/src/Generator/Rules', \GLOB_ONLYDIR) ?: [];
+    }
+
+    /**
      * The targets found, sorted.
      *
      * @return  string[]

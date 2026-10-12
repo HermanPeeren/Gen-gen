@@ -124,6 +124,22 @@ class HtmlView extends BaseHtmlView
 
 		$toolbar->addNew('generator.add');
 
+		// Import opens the panel with the file field above the list (see the
+		// layout). A toolbar holds buttons and not inputs, so the button shows
+		// the field rather than being it, and the panel's own button sends the
+		// upload with the list form's token.
+		if ($this->getCurrentUser()->authorise('core.create', 'com_gengen')) {
+			$toolbar->basicButton('import', 'COM_GENGEN_TOOLBAR_IMPORT')
+				->icon('icon-upload')
+				->buttonClass('btn btn-primary')
+				->attributes([
+					'data-bs-toggle' => 'collapse',
+					'data-bs-target' => '#gengen-import',
+					'aria-controls'  => 'gengen-import',
+					'aria-expanded'  => 'false',
+				]);
+		}
+
 		$dropdown = $toolbar->dropdownButton('status-group')
 			->text('JTOOLBAR_CHANGE_STATUS')
 			->toggleSplit(false)

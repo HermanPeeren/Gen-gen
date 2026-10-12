@@ -14,6 +14,8 @@ use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use Psr\Container\ContainerInterface;
+use Yepr\Component\Gengen\Administrator\Generator\VocabularyContext;
+use Yepr\Component\Gengen\Administrator\Generator\VocabularyLibrary;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -45,9 +47,8 @@ class GengenComponent extends MVCComponent implements BootableExtensionInterface
 	/**
 	 * Booting the extension.
 	 *
-	 * Nothing to do yet. The method exists because the interface is what says
-	 * "this component gets a chance to set itself up", and adding it later
-	 * means changing the class declaration rather than filling in a body.
+	 * One thing, since 0.6: the form fields get the vocabulary library the
+	 * container holds.
 	 *
 	 * @param   ContainerInterface  $container  The container.
 	 *
@@ -57,5 +58,12 @@ class GengenComponent extends MVCComponent implements BootableExtensionInterface
 	 */
 	public function boot(ContainerInterface $container)
 	{
+		// The form fields read the vocabulary library through VocabularyContext,
+		// because Joomla makes them with `new` and nothing can inject into them.
+		// They get the one the container holds, so the fields and the import
+		// cannot disagree about which targets this site has.
+		if ($container->has(VocabularyLibrary::class)) {
+			VocabularyContext::useLibrary($container->get(VocabularyLibrary::class));
+		}
 	}
 }

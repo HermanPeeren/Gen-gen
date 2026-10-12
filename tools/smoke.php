@@ -135,6 +135,9 @@ foreach (
     'Yepr\Component\Gengen\Administrator\Model\GeneratorModel',
     'Yepr\Component\Gengen\Administrator\Model\GeneratorsModel',
     'Yepr\Component\Gengen\Administrator\Model\GenerateModel',
+    'Yepr\Component\Gengen\Administrator\Model\ImportModel',
+    'Yepr\Component\Gengen\Administrator\Generator\ImportedGenerator',
+    'Yepr\Component\Gengen\Administrator\Service\MVCFactory',
     'Yepr\Component\Gengen\Administrator\Table\GeneratorTable',
     'Yepr\Component\Gengen\Administrator\View\Generator\HtmlView',
     'Yepr\Component\Gengen\Administrator\View\Generators\HtmlView',
@@ -176,6 +179,22 @@ try {
         check(
             'its MVC factory finds the models',
             $model instanceof Yepr\Component\Gengen\Administrator\Model\GeneratorsModel
+        );
+
+        // The import is handed the vocabulary library by this component's own
+        // factory (0.6). Made outside it, the model throws on first use, so
+        // the question is whether the factory gives it one that finds a target.
+        $import = $component->getMVCFactory()->createModel('Import', 'Administrator', ['ignore_request' => true]);
+        try {
+            $targets = (new \ReflectionMethod($import, 'getVocabularyLibrary'))->invoke($import)->targets();
+        } catch (\Throwable $e) {
+            $targets = [];
+        }
+
+        check(
+            'its MVC factory hands the import the vocabulary library',
+            $targets !== [],
+            $targets === [] ? 'no library, or one that finds no target' : implode(', ', $targets)
         );
     }
 } catch (\Throwable $e) {

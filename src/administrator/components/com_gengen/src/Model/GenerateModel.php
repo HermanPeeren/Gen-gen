@@ -85,6 +85,10 @@ class GenerateModel extends BaseDatabaseModel
 	 * acceptance check compares what the pipeline produces, which this leaves
 	 * exactly as it was.
 	 *
+	 * Since 0.6 it carries `model.json` too: the form data, so that the Import
+	 * button on the Generators list gives back exactly this generator, groups,
+	 * summaries and all. Added here for the same two reasons.
+	 *
 	 * @param   GeneratorDefinition  $definition           The modelled generator.
 	 * @param   string               $metalanguageKey      The language it is bound to, '' for none.
 	 * @param   string               $metalanguageVersion  That language's version.
@@ -104,6 +108,8 @@ class GenerateModel extends BaseDatabaseModel
 			GeneratorManifest::FILE,
 			GeneratorManifest::toJson($definition, $metalanguageKey, $metalanguageVersion)
 		);
+		$files->add(GeneratorManifest::MODEL, GeneratorManifest::modelJson($definition));
+
 		$directory = $this->outputDirectory() . '/' . $this->slug($definition->name);
 
 		if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
