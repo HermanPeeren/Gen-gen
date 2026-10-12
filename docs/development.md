@@ -296,7 +296,8 @@ src/gengen.xml                 the manifest
 src/script.php                 refuses a bad environment, installs the library
 src/administrator/components/com_gengen/
   src/Controller/             display, the list, the form, and the Generate task
-  src/Model/                  Generator (edit), Generators (list), Generate (run)
+  src/Model/                  Generator (edit), Generators (list), Generate (run), Import
+  src/Service/                the MVC factory that hands the import its vocabulary library
   src/Table/GeneratorTable    one row: a name, a target, and the model as JSON
   src/View/, tmpl/            a list and an edit form, and nothing else
 ```
@@ -355,7 +356,9 @@ already been compared file for file with the approved one, and the LedgerLang
 generator that extends it. So both are on the Generators list as models to open and
 edit, not only as ready-made generators on the Extension Generator's side. The
 WordPress and Drupal generators are not rules yet; see
-[built-in-generators.md](built-in-generators.md).
+[built-in-generators.md](built-in-generators.md). The same two generators can
+be imported from a zip with the **Import** button on the Generators list, which
+is how a site without this repository gets them; that page says how.
 
 **Cypress is for the one thing none of that can see: whether a screen renders.**
 Exten-gen's views passed every check it had and returned 200 with an empty body,
