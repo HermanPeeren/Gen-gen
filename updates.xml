@@ -14,6 +14,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/HermanPeeren/Gen-gen/releases/download/v0.5.2/com_gengen-0.5.2.zip</downloadurl>
 		</downloads>
+		<sha512>637fda23fa793cf1a24c064278f3afb200332b30e6177240318159d0bcae674e3f9b7636fa0926fa8bb8351c8a8d02cf287bc56f025eeecce131a2ce0e133971</sha512>
 		<maintainer>Herman Peeren</maintainer>
 		<maintainerurl>https://yepr.nl</maintainerurl>
 		<targetplatform name="joomla" version="6\..*"/>
