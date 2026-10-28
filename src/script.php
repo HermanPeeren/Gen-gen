@@ -42,8 +42,12 @@ class Com_GengenInstallerScript
 
     /**
      * The oldest library release that has everything this version calls.
+     *
+     * 0.19.1 for the uninstall guard: the library refuses to be uninstalled
+     * while this component is installed, so a site cannot lose it from under
+     * this one and fail on the next page with a missing class.
      */
-    private const LIBRARY_MINIMUM = '0.14.0';
+    private const LIBRARY_MINIMUM = '0.19.1';
 
     /**
      * The oldest Joomla this runs on.
